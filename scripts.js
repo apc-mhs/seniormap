@@ -105,13 +105,13 @@ function initMap() {
         ]
     });
 
-    // TODO: Do this arynchronously
+    // TODO: Do this asynchronously
     Tabletop.init({
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(students, tabletop) {
             // TODO: Stop using arrays
             for (student of tabletop.sheets()['raw'].toArray()) {
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     position: {
                         lat: parseFloat(student[6]),
                         lng: parseFloat(student[7]),
@@ -121,11 +121,15 @@ function initMap() {
                     institution: student[3],
                 })
                 marker.addListener('click', function() {
-                    document.getElementById('instructions').className = 'hidden';
-                    document.getElementById('institution-name').textContent = marker.institution;
-                    document.getElementById('institution-logo').src = logos[marker.institution];
-                    var table = document.createElement('table'),
-                        tbody = document.createElement('tbody');
+                    var institutionLogo = document.createElement('img'),
+                        institutionName = document.createElement('h3'),
+                        studentPhoto = document.createElement('img'),
+                        studentName = document.createElement('h3');
+                    institutionLogo.src = logos[marker.institution];
+                    institutionName.textContent = marker.institution;
+                    studentPhoto.src = '';
+                    studentName = marker.name;
+                    var info = document.createElement('div');
                     var window = new google.maps.InfoWindow({
                         content: info,
                     });
