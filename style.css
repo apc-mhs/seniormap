@@ -14,3 +14,9 @@ body {
 div a[rel="noopener"] img {
     display: none !important;
 }
+#logo {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 80px;
+}
