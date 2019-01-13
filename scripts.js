@@ -5,6 +5,8 @@ var logos = {
 
 var map;
 
+var markers = [];
+
 // Called by Maps API upon loading.
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), { // Define Map Settings
@@ -112,6 +114,7 @@ function initMap() {
             // TODO: Stop using arrays
             for (student of tabletop.sheets()['raw'].toArray()) {
                 marker = new google.maps.Marker({
+                    map: map,
                     position: {
                         lat: parseFloat(student[6]),
                         lng: parseFloat(student[7]),
@@ -119,27 +122,32 @@ function initMap() {
                     title: student[4] + ' ' + student[5] + ': ' + student[3],
                     name: student[4] + ' ' + student[5],
                     institution: student[3],
-                })
-                marker.addListener('click', function() {
-                    var institutionLogo = document.createElement('img'),
-                        institutionName = document.createElement('h3'),
-                        studentPhoto = document.createElement('img'),
-                        studentName = document.createElement('h3');
-                    institutionLogo.src = logos[marker.institution];
-                    institutionName.textContent = marker.institution;
-                    studentPhoto.src = '';
-                    studentName = marker.name;
-                    var info = document.createElement('div');
-                    var window = new google.maps.InfoWindow({
-                        content: info,
-                    });
-                    window.open(map, marker);
                 });
-                marker.setMap(map);
+                google.maps.event.addListener(marker, 'click', function() {
+                    details(marker);
+                });
             }
         },
         simpleSheet: true,
     });
 }
 
-
+function details(marker) {
+    var institutionLogo = document.createElement('img'),
+        institutionName = document.createElement('h3'),
+        studentPhoto = document.createElement('img'),
+        studentName = document.createElement('h3');
+    institutionLogo.src = logos[marker.institution];
+    institutionName.textContent = marker.institution;
+    studentPhoto.src = '';
+    studentName.textContent = marker.name;
+    var info = document.createElement('div');
+    info.appendChild(institutionLogo);
+    info.appendChild(institutionName);
+    info.appendChild(studentPhoto);
+    info.appendChild(studentName);
+    var popup = new google.maps.InfoWindow({
+        content: info.innerHTML,
+    });
+    popup.open(map, marker);
+}
