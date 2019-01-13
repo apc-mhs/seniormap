@@ -20,10 +20,11 @@ div a[rel="noopener"] img {
     bottom: 10px;
     left: 10px;
     color: white;
+    width: 140px;
 }
 #branding a {
     color: inherit;
 }
 #logo {
-    width: 100px;
+    width: 100%;
 }
