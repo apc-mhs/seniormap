@@ -109,6 +109,21 @@ function initMap() {
     Tabletop.init({
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(students, tabletop) {
+            var institutions = {};
+            for (student of tabletop.sheets()['raw'].toArray()) {
+                if (!institutions[student[3]]) { // If the institution isn't already in the list
+                    institutions[student[3]] = {
+                        name: student[3],
+                        type: student[2],
+                        students: [],
+                    }
+                }
+                institutions[student[3]].students.push({
+                    name: student[4] + ' ' + student[5],
+                    //photo: ,
+                    major: student[6],
+                });
+            }
             // TODO: Stop using arrays
             for (student of tabletop.sheets()['raw'].toArray()) {
                 var marker = new google.maps.Marker({
