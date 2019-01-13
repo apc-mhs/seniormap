@@ -146,7 +146,7 @@ function initMap() {
 }
 
 function details(institution) {
-    if (popup) popup.remove();
+    if (popup) popup.setMap(null);
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
     institutionContainer.className = 'institution-container';
