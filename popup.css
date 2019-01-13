@@ -6,14 +6,14 @@
     width: 200px;
 }
 /* The bubble is anchored above the tip. */
-.popup-bubble {
+.popup {
     position: absolute;
     width: 100%;
     bottom: /* TIP_HEIGHT= */ 8px;
     left: 0;
 }
 /* Draw the tip. */
-.popup-bubble::after {
+.popup::after {
     content: "";
     position: absolute;
     top: 0;
@@ -29,7 +29,7 @@
     border-top: /* TIP_HEIGHT= */ 8px solid white;
 }
 /* The popup bubble itself. */
-.popup-bubble-content {
+.popup-content {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,7 +38,4 @@
     background-color: white;
     padding: 5px;
     overflow-y: auto;
-}
-.info {
-
 }

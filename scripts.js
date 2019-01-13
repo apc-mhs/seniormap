@@ -154,7 +154,6 @@ function details(institution) {
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
     var info = document.createElement('div');
-    info.className = 'info';
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);
     info.appendChild(institutionType);

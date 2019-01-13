@@ -9,10 +9,10 @@ function definePopupClass() {
     Popup = function(position, content) {
         this.position = position;
 
-        content.classList.add('popup-bubble-content');
+        content.classList.add('popup-content');
 
         var pixelOffset = document.createElement('div');
-        pixelOffset.classList.add('popup-bubble');
+        pixelOffset.classList.add('popup');
         pixelOffset.appendChild(content);
 
         this.anchor = document.createElement('div');
