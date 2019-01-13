@@ -1,6 +1,8 @@
 var logos = {
+    // TODO: It would be nicer to not hotlink literally all of these
     'Yale University': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Yale_University_Shield_1.svg/200px-Yale_University_Shield_1.svg.png',
     'Princeton University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/71/Princeton_shield.svg/200px-Princeton_shield.svg.png',
+    'University of Virginia': 'https://d9tyu2epg3boq.cloudfront.net/institutions/uva.jpg',
 };
 
 var map, popup;
