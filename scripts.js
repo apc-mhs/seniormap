@@ -189,7 +189,7 @@ function definePopupClass() {
     Popup.prototype.draw = function() {
         var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
         this.anchor.style.left = divPosition.x + 'px';
-        this.anchor.style.top = divPosition.y + 'px';
+        this.anchor.style.top = (divPosition.y-50) + 'px';
     };
 
     /** Stops clicks/drags from bubbling up to the map. */

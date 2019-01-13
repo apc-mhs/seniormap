@@ -4,7 +4,6 @@
     position: absolute;
     /* The max width of the info window. */
     width: 200px;
-    display: block !important;
 }
 /* The bubble is anchored above the tip. */
 .popup-bubble-anchor {
