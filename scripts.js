@@ -1,11 +1,4 @@
 function readSheet() {
-     Tabletop.init({
-        key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
-        callback: function(data, tabletop) {
-            console.log(data);
-        },
-        simpleSheet: true,
-     });
 }
 window.addEventListener('DOMContentLoaded', readSheet);
 
@@ -110,10 +103,21 @@ function initMap() {
         ]
     });
 
-    /*for (college of colleges) {
-        new google.maps.Marker({
-            position: college.position,
-            title: college.name,
-        }).setMap(map);
-    }*/
+    // TODO: Do this arynchronously
+    Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
+        callback: function(students, tabletop) {
+            for (student of students) {
+                new google.maps.Marker({
+                    position: {
+                        lat: parseFloat(student.lat),
+                        lng: parseFloat(student.lng),
+                    },
+                    title: student.name,
+                }).setMap(map);
+            }
+        },
+        simpleSheet: true,
+    });
+
 }
