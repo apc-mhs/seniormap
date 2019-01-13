@@ -136,23 +136,28 @@ function details(marker) {
     if (popup) popup.close();
     var institutionLogo = document.createElement('img'),
         institutionType = document.createElement('p'),
-        institutionName = document.createElement('p'),
-        studentPhoto = document.createElement('img'),
-        studentName = document.createElement('p'),
-        studentMajor = document.createElement('p');
+        institutionName = document.createElement('p');
     institutionLogo.src = logos[marker.institution];
     institutionType.textContent = marker.type;
     institutionName.textContent = marker.institution;
-    studentPhoto.src = '';
-    studentName.textContent = marker.name;
-    studentMajor.textContent = marker.major;
     var info = document.createElement('div');
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);
     info.appendChild(institutionType);
-    info.appendChild(studentPhoto);
-    info.appendChild(studentName);
-    info.appendChild(studentMajor);
+    for (student of marker.students) {
+        var studentPhoto = document.createElement('img'),
+            studentName = document.createElement('p'),
+            studentMajor = document.createElement('p');
+        studentPhoto.src = '';
+        studentName.textContent = marker.name;
+        studentMajor.textContent = marker.major;
+        var studentContainer = document.createElement('div');
+        studentContainer.className = 'student';
+        studentContainer.appendChild(studentPhoto);
+        studentContainer.appendChild(studentName);
+        studentContainer.appendChild(studentMajor);
+        info.appendChild(studentContainer);
+    }
     popup = new google.maps.InfoWindow({
         content: info.innerHTML,
     });
