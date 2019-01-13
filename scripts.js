@@ -5,7 +5,7 @@ var logos = {
     'University of Virginia': 'https://d9tyu2epg3boq.cloudfront.net/institutions/uva.jpg',
     'Virginia Tech': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Virginia_Tech_Hokies_logo.svg/200px-Virginia_Tech_Hokies_logo.svg.png',
     'Washington and Lee University': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/W%26L_Generals.png/200px-W%26L_Generals.png',
-    'William & Mary': 'https://wydaily.com/wp-content/uploads/2014/11/primary.jpg',
+    'The College of William & Mary': 'https://wydaily.com/wp-content/uploads/2014/11/primary.jpg',
     'Virginia Commonwealth University': 'https://www.vcu.edu/media/vcu/assets/images/vcu-logo/vcu-seal-large.svg',
     'George Mason University': 'https://brand.gmu.edu/wp-content/uploads/assets/primarylogo/PC/GMURGB.jpg',
     'James Madison University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/James_Madison_University_seal.svg/200px-James_Madison_University_seal.svg.png',
