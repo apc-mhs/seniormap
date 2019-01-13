@@ -54,3 +54,11 @@
 }
 .popup-content .student-container {
 }
+.popup-content .student-container img {
+    float: left;
+    width: 50px;
+    margin-right: 5px;
+}
+.popup-content .student-container .student-name {
+    font-style: italic;
+}

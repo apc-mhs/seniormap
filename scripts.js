@@ -166,7 +166,9 @@ function details(institution) {
             studentMajor = document.createElement('p');
         studentPhoto.src = 'portraits/' + student.name.replace(' ', '_') + '.jpg';
         studentName.textContent = student.name;
+        studentName.className = 'student-name';
         studentMajor.textContent = student.major;
+        studentMajor.className = 'student-major';
         var studentContainer = document.createElement('div');
         studentContainer.className = 'student-container';
         studentContainer.appendChild(studentPhoto);
