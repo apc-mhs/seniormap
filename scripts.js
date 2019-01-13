@@ -1,3 +1,5 @@
+var map;
+
 // Called by Maps API upon loading.
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), { // Define Map Settings
@@ -113,7 +115,12 @@ function initMap() {
                     name: student[4] + ' ' + student[5],
                     institution: student[3],
                 })
-                marker.addListener('click', details);
+                marker.addListener('click', function() {
+                    var window = new google.maps.InfoWindow({
+                        content: 'hi'
+                    });
+                    window.open(map, marker);
+                });
                 marker.setMap(map);
             }
         },
@@ -121,6 +128,3 @@ function initMap() {
     });
 }
 
-function details(marker) {
-
-}
