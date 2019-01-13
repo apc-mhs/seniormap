@@ -1,90 +1,13 @@
-var colleges = [
-    {
-        name: 'Worcester Polytechnic Institute',
-        position: {
-            lat: 42.2746,
-            lng: -71.8063,
+function readSheet() {
+     Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
+        callback: function(data, tabletop) {
+            console.log(data);
         },
-    },
-    {
-        name: 'University of Virginia',
-        position: {
-            lat: 38.0336,
-            lng: -78.5080,
-        }
-    },
-    {
-        name: 'William & Mary',
-        position: {
-            lat: 37.2717,
-            lng: -76.7134,
-        }
-    },
-    {
-        name: 'Pennsylvania State University',
-        position: {
-            lat: 40.7982,
-            lng: -77.8599,
-        },
-    },
-    {
-        name: 'John\'s Hopkins University',
-        position: {
-            lat: 39.3299,
-            lng: -76.6205,
-        }
-    },
-    {
-        name: 'Massachusetts Institute of Technology',
-        position: {
-            lat: 42.3601,
-            lng: -71.0942
-        }
-    },
-    {
-        name: 'University of California, Los Angeles',
-        position: {
-            lat: 34.0689,
-            lng: -118.4452,
-        },
-    },
-    {
-        name: 'Yale University',
-        position: {
-            lat: 41.3163,
-            lng: -72.9223,
-        },
-    },
-    {
-        name: 'Virginia Tech',
-        position: {
-            lat: 37.2284,
-            lng: -80.4234,
-        },
-    },
-    {
-        name: 'Virginia Commonwealth University',
-        position: {
-            lat: 37.5495,
-            lng: -77.4510,
-        },
-    },
-    {
-        name: 'Michigan State University',
-        position: {
-            lat: 42.7018,
-            lng: -84.4822,
-        },
-    },
-    {
-        name: 'Cornell University',
-        position: {
-            lat: 42.4534,
-            lng: -76.4735,
-        },
-    },
-];
-
+        simpleSheet: true,
+     });
+}
+window.addEventListener('DOMContentLoaded', readSheet);
 
 
 // Called by Maps API upon loading.
@@ -187,10 +110,10 @@ function initMap() {
         ]
     });
 
-    for (college of colleges) {
+    /*for (college of colleges) {
         new google.maps.Marker({
             position: college.position,
             title: college.name,
         }).setMap(map);
-    }
+    }*/
 }
