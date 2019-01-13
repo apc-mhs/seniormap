@@ -149,8 +149,8 @@ function details(institution) {
         institutionType = document.createElement('p'),
         institutionName = document.createElement('p');
     institutionLogo.src = logos[institution.name];
-    institutionType.textContent = institution.type;
     institutionName.textContent = institution.name;
+    institutionType.textContent = institution.type;
     var info = document.createElement('div');
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);

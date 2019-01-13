@@ -23,6 +23,7 @@ body {
 }
 .gm-style div:first-child > div > div > div > div {
     /*width: 200px !important;*/
+    border-radius: 0 !important;
 }
 /* Popup inner */
 .gm-style-iw {
