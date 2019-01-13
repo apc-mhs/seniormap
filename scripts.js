@@ -150,15 +150,15 @@ function details(institution) {
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
     institutionContainer.className = 'institution-container';
-    var institutionLogo = document.createElement('img'),
-        institutionType = document.createElement('p'),
+    var institutionType = document.createElement('p'),
         institutionName = document.createElement('h3');
-    institutionLogo.src = logos[institution.name];
+        institutionLogo = document.createElement('img'),
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
-    institutionContainer.appendChild(institutionLogo);
+    institutionLogo.src = logos[institution.name];
     institutionContainer.appendChild(institutionName);
     institutionContainer.appendChild(institutionType);
+    institutionContainer.appendChild(institutionLogo);
     info.appendChild(institutionContainer);
     for (student of institution.students) {
         var studentPhoto = document.createElement('img'),

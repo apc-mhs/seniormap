@@ -9,7 +9,7 @@
 .popup {
     position: absolute;
     width: 100%;
-    bottom: /* TIP_HEIGHT= */ 8px;
+    bottom: /* TIP_HEIGHT= */ 20px;
     left: 0;
 }
 /* Draw the tip. */
@@ -24,9 +24,9 @@
     width: 0;
     height: 0;
     /* The tip is 8px high, and 12px wide. */
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: /* TIP_HEIGHT= */ 8px solid white;
+    border-left: 105px solid transparent;
+    border-right: 105px solid transparent;
+    border-top: /* TIP_HEIGHT= */ 20px solid white;
 }
 /* The popup bubble itself. */
 .popup-content {

@@ -9,3 +9,7 @@ body {
     color: #333;
     font-size: 16px;
 }
+/* Google stuff */
+.gmnoprint, .gmnoscreen {
+    display: none !important;
+}
