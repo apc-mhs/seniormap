@@ -22,7 +22,7 @@ function initMap() {
         mapTypeControl: false,
         streetViewControl: false,
         rotateControl: false,
-        fullscreenControl: false,
+        fullscreenControl: true,
         backgroundColor: '#333333',
         styles: [
             {
