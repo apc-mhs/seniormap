@@ -108,16 +108,21 @@ function initMap() {
         key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
         callback: function(students, tabletop) {
             for (student of students) {
-                new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: {
                         lat: parseFloat(student.lat),
                         lng: parseFloat(student.lng),
                     },
-                    title: student.name,
-                }).setMap(map);
+                    title: student.forename + ' ' + student.surname,
+                })
+                marker.addListener('click', details);
+                marker.setMap(map);
             }
         },
         simpleSheet: true,
     });
+}
 
+function details(marker) {
+    console.log('Opened');
 }
