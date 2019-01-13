@@ -168,7 +168,7 @@ function details(institution) {
         studentName.textContent = student.name;
         studentMajor.textContent = student.major;
         var studentContainer = document.createElement('div');
-        studentContainer.className = 'student';
+        studentContainer.className = 'student-container';
         studentContainer.appendChild(studentPhoto);
         studentContainer.appendChild(studentName);
         studentContainer.appendChild(studentMajor);

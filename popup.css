@@ -36,9 +36,16 @@
     transform: translate(-50%, -100%);
     /* Style the info window. */
     background-color: white;
-    padding: 5px;
     overflow-y: auto;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    padding: 5px;
 }
 .popup-content .institution-container img {
     width: 200px;
+}
+.popup-content .institution-container h3 {
+    font-size:
+}
+.popup-content .student-container {
 }
