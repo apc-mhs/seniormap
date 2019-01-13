@@ -164,7 +164,7 @@ function details(institution) {
         institutionLogo = document.createElement('img'),
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
-    institutionLogo.src = logos[institution.name];
+    institutionLogo.src = logos[institution.name] || '';
     institutionContainer.appendChild(institutionName);
     institutionContainer.appendChild(institutionType);
     institutionContainer.appendChild(institutionLogo);
