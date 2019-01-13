@@ -1,19 +1,19 @@
 /* The location pointed to by the popup tip. */
-.popup-tip-anchor {
+.popup-tip {
     height: 0;
     position: absolute;
     /* The max width of the info window. */
     width: 200px;
 }
 /* The bubble is anchored above the tip. */
-.popup-bubble-anchor {
+.popup-bubble {
     position: absolute;
     width: 100%;
     bottom: /* TIP_HEIGHT= */ 8px;
     left: 0;
 }
 /* Draw the tip. */
-.popup-bubble-anchor::after {
+.popup-bubble::after {
     content: "";
     position: absolute;
     top: 0;
@@ -38,4 +38,7 @@
     background-color: white;
     padding: 5px;
     overflow-y: auto;
+}
+.info {
+
 }
