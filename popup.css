@@ -39,13 +39,19 @@
     overflow-y: auto;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
+    color: #333;
     padding: 5px;
+}
+.popup-content .institution-container {
+    text-align: center;
+    border-bottom: solid 1px currentColor;
+    padding-bottom: 5px;
 }
 .popup-content .institution-container img {
     width: 200px;
 }
 .popup-content .institution-container h3 {
-    font-size:
+    font-size: 20px;
 }
 .popup-content .student-container {
 }
