@@ -1,7 +1,7 @@
-var logos = [
+var logos = {
     'Yale University': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Yale_University_Shield_1.svg/200px-Yale_University_Shield_1.svg.png',
     'Princeton University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/71/Princeton_shield.svg/200px-Princeton_shield.svg.png',
-];
+};
 
 var map;
 
@@ -107,7 +107,7 @@ function initMap() {
 
     // TODO: Do this arynchronously
     Tabletop.init({
-        key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
+        key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(students, tabletop) {
             // TODO: Stop using arrays
             for (student of tabletop.sheets()['raw'].toArray()) {
@@ -121,8 +121,13 @@ function initMap() {
                     institution: student[3],
                 })
                 marker.addListener('click', function() {
+                    document.getElementById('instructions').className = 'hidden';
+                    document.getElementById('institution-name').textContent = marker.institution;
+                    document.getElementById('institution-logo').src = logos[marker.institution];
+                    var table = document.createElement('table'),
+                        tbody = document.createElement('tbody');
                     var window = new google.maps.InfoWindow({
-                        content: 'hi'
+                        content: info,
                     });
                     window.open(map, marker);
                 });
@@ -132,4 +137,5 @@ function initMap() {
         simpleSheet: true,
     });
 }
+
 
