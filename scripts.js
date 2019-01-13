@@ -188,19 +188,8 @@ function definePopupClass() {
     /** Called when the popup needs to draw itself. */
     Popup.prototype.draw = function() {
         var divPosition = this.getProjection().fromLatLngToDivPixel(this.position);
-        // Hide the popup when it is far out of view.
-        var display =
-            Math.abs(divPosition.x) < 4000 && Math.abs(divPosition.y) < 4000 ?
-            'block' :
-            'none';
-
-        if (display === 'block') {
-            this.anchor.style.left = divPosition.x + 'px';
-            this.anchor.style.top = divPosition.y + 'px';
-        }
-        if (this.anchor.style.display !== display) {
-            this.anchor.style.display = display;
-        }
+        this.anchor.style.left = divPosition.x + 'px';
+        this.anchor.style.top = divPosition.y + 'px';
     };
 
     /** Stops clicks/drags from bubbling up to the map. */
