@@ -5,8 +5,6 @@ var logos = {
 
 var map;
 
-var markers = [];
-
 // Called by Maps API upon loading.
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), { // Define Map Settings
@@ -113,7 +111,7 @@ function initMap() {
         callback: function(students, tabletop) {
             // TODO: Stop using arrays
             for (student of tabletop.sheets()['raw'].toArray()) {
-                marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     map: map,
                     position: {
                         lat: parseFloat(student[6]),
@@ -124,7 +122,7 @@ function initMap() {
                     institution: student[3],
                 });
                 google.maps.event.addListener(marker, 'click', function() {
-                    details(marker);
+                    details(this);
                 });
             }
         },
