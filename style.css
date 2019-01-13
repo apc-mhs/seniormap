@@ -9,31 +9,3 @@ body {
     color: #333;
     font-size: 16px;
 }
-/* Popup inner */
-/* TODO: Target this more gracefully */
-.gm-style {
-    top: 0 !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    right: 0 !important;
-    height: auto;
-    width: auto !important;
-    min-width: 0 !important;
-    border-radius: 0 !important;
-}
-.gm-style div:first-child > div > div > div > div {
-    /*width: 200px !important;*/
-    border-radius: 0 !important;
-}
-/* Popup inner */
-.gm-style-iw {
-    top: 0 !important;
-    right: 0 !important;
-    left: 0 !important;
-    padding: 10px;
-}
-.gm-style-iw img {
-    width: 200px;
-}
-.gm-style button.gm-ui-hover-effect {
-}
