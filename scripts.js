@@ -121,6 +121,7 @@ function initMap() {
                     type: student[2],
                     name: student[4] + ' ' + student[5],
                     institution: student[3],
+                    major: student[8],
                 });
                 google.maps.event.addListener(marker, 'click', function() {
                     details(this);
@@ -136,19 +137,22 @@ function details(marker) {
         institutionType = document.createElement('p'),
         institutionName = document.createElement('p'),
         studentPhoto = document.createElement('img'),
-        studentName = document.createElement('p');
+        studentName = document.createElement('p'),
+        studentMajor = document.createElement('p');
     institutionLogo.src = logos[marker.institution];
     institutionType.textContent = marker.type;
     institutionName.textContent = marker.institution;
     studentPhoto.src = '';
     studentName.textContent = marker.name;
+    studentMajor.textContent = marker.major;
     var info = document.createElement('div');
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);
     info.appendChild(institutionType);
     info.appendChild(studentPhoto);
     info.appendChild(studentName);
-    var popup = new google.maps.InfoWindow({
+    info.appendChild(studentMajor);
+    popup = new google.maps.InfoWindow({
         content: info.innerHTML,
     });
     popup.open(map, marker);
