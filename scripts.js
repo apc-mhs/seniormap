@@ -102,13 +102,14 @@ function initMap() {
     Tabletop.init({
         key: 'https://docs.google.com/spreadsheets/d/1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE/pubhtml',
         callback: function(students, tabletop) {
-            for (student of students) {
+            console.log(tabletop.sheets()['raw'].toArray());
+            for (student of tabletop.sheets()['raw'].toArray()) {
                 var marker = new google.maps.Marker({
                     position: {
-                        lat: parseFloat(student.lat),
-                        lng: parseFloat(student.lng),
+                        lat: parseFloat(student[6]),
+                        lng: parseFloat(student[7]),
                     },
-                    title: student.forename + ' ' + student.surname,
+                    title: student[4] + ' ' + student[5],
                 })
                 marker.addListener('click', details);
                 marker.setMap(map);
@@ -119,5 +120,4 @@ function initMap() {
 }
 
 function details(marker) {
-    console.log('Opened');
 }
