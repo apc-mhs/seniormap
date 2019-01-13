@@ -110,12 +110,17 @@ function initMap() {
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(students, tabletop) {
             var institutions = {};
+            // TODO: Stop getting sheet data in array
             for (student of tabletop.sheets()['raw'].toArray()) {
                 if (!institutions[student[3]]) { // If the institution isn't already in the list
                     institutions[student[3]] = {
                         name: student[3],
                         type: student[2],
                         students: [],
+                        position: {
+                            lat: parseFloat(student[6]),
+                            lng: parseFloat(student[7]),
+                        },
                     }
                 }
                 institutions[student[3]].students.push({
@@ -124,48 +129,37 @@ function initMap() {
                     major: student[6],
                 });
             }
-            // TODO: Stop using arrays
-            for (student of tabletop.sheets()['raw'].toArray()) {
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: {
-                        lat: parseFloat(student[6]),
-                        lng: parseFloat(student[7]),
-                    },
-                    title: student[4] + ' ' + student[5] + ': ' + student[3],
-                    type: student[2],
-                    name: student[4] + ' ' + student[5],
-                    institution: student[3],
-                    major: student[8],
-                });
+            for (name in institutions) {
+                var marker = new google.maps.Marker(institutions[name]);
                 google.maps.event.addListener(marker, 'click', function() {
                     details(this);
                 });
+                marker.setMap(map);
             }
         },
         simpleSheet: true,
     });
 }
 
-function details(marker) {
+function details(institution) {
     if (popup) popup.close();
     var institutionLogo = document.createElement('img'),
         institutionType = document.createElement('p'),
         institutionName = document.createElement('p');
-    institutionLogo.src = logos[marker.institution];
-    institutionType.textContent = marker.type;
-    institutionName.textContent = marker.institution;
+    institutionLogo.src = logos[institution.name];
+    institutionType.textContent = institution.type;
+    institutionName.textContent = institution.name;
     var info = document.createElement('div');
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);
     info.appendChild(institutionType);
-    for (student of marker.students) {
+    for (student of institution.students) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
         studentPhoto.src = '';
-        studentName.textContent = marker.name;
-        studentMajor.textContent = marker.major;
+        studentName.textContent = student.name;
+        studentMajor.textContent = student.major;
         var studentContainer = document.createElement('div');
         studentContainer.className = 'student';
         studentContainer.appendChild(studentPhoto);
@@ -176,5 +170,5 @@ function details(marker) {
     popup = new google.maps.InfoWindow({
         content: info.innerHTML,
     });
-    popup.open(map, marker);
+    popup.open(map, institution);
 }
