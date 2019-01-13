@@ -118,6 +118,7 @@ function initMap() {
                         lng: parseFloat(student[7]),
                     },
                     title: student[4] + ' ' + student[5] + ': ' + student[3],
+                    type: student[2],
                     name: student[4] + ' ' + student[5],
                     institution: student[3],
                 });
@@ -132,16 +133,19 @@ function initMap() {
 
 function details(marker) {
     var institutionLogo = document.createElement('img'),
-        institutionName = document.createElement('h3'),
+        institutionType = document.createElement('p'),
+        institutionName = document.createElement('p'),
         studentPhoto = document.createElement('img'),
-        studentName = document.createElement('h3');
+        studentName = document.createElement('p');
     institutionLogo.src = logos[marker.institution];
+    institutionType.textContent = marker.type;
     institutionName.textContent = marker.institution;
     studentPhoto.src = '';
     studentName.textContent = marker.name;
     var info = document.createElement('div');
     info.appendChild(institutionLogo);
     info.appendChild(institutionName);
+    info.appendChild(institutionType);
     info.appendChild(studentPhoto);
     info.appendChild(studentName);
     var popup = new google.maps.InfoWindow({
