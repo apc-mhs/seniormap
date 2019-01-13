@@ -1,8 +1,3 @@
-function readSheet() {
-}
-window.addEventListener('DOMContentLoaded', readSheet);
-
-
 // Called by Maps API upon loading.
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), { // Define Map Settings
