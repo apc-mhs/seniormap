@@ -146,17 +146,20 @@ function initMap() {
 }
 
 function details(institution) {
-    //if (popup) popup.close();
+    if (popup) popup.remove();
+    var info = document.createElement('div');
+    var institutionContainer = document.createElement('div');
+    institutionContainer.className = 'institution-container';
     var institutionLogo = document.createElement('img'),
         institutionType = document.createElement('p'),
-        institutionName = document.createElement('p');
+        institutionName = document.createElement('h3');
     institutionLogo.src = logos[institution.name];
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
-    var info = document.createElement('div');
-    info.appendChild(institutionLogo);
-    info.appendChild(institutionName);
-    info.appendChild(institutionType);
+    institutionContainer.appendChild(institutionLogo);
+    institutionContainer.appendChild(institutionName);
+    institutionContainer.appendChild(institutionType);
+    info.appendChild(institutionContainer);
     for (student of institution.students) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),

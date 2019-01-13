@@ -39,3 +39,6 @@
     padding: 5px;
     overflow-y: auto;
 }
+.popup-content .institution-container img {
+    width: 200px;
+}
