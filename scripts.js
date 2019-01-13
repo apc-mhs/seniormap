@@ -3,7 +3,7 @@ var logos = {
     'Princeton University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/71/Princeton_shield.svg/200px-Princeton_shield.svg.png',
 };
 
-var map;
+var map, popup;
 
 // Called by Maps API upon loading.
 function initMap() {
@@ -133,6 +133,7 @@ function initMap() {
 }
 
 function details(marker) {
+    if (popup) popup.close();
     var institutionLogo = document.createElement('img'),
         institutionType = document.createElement('p'),
         institutionName = document.createElement('p'),
