@@ -1,20 +1,3 @@
-var logos = {
-    // TODO: It would be nicer to not hotlink literally all of these
-    'Yale University': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Yale_University_Shield_1.svg/200px-Yale_University_Shield_1.svg.png',
-    'Princeton University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/71/Princeton_shield.svg/200px-Princeton_shield.svg.png',
-    'University of Virginia': 'https://d9tyu2epg3boq.cloudfront.net/institutions/uva.jpg',
-    'Virginia Tech': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Virginia_Tech_Hokies_logo.svg/200px-Virginia_Tech_Hokies_logo.svg.png',
-    'Washington and Lee University': 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/W%26L_Generals.png/200px-W%26L_Generals.png',
-    'The College of William & Mary': 'https://wydaily.com/wp-content/uploads/2014/11/primary.jpg',
-    'Virginia Commonwealth University': 'https://www.vcu.edu/media/vcu/assets/images/vcu-logo/vcu-seal-large.svg',
-    'George Mason University': 'https://brand.gmu.edu/wp-content/uploads/assets/primarylogo/PC/GMURGB.jpg',
-    'James Madison University': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/James_Madison_University_seal.svg/200px-James_Madison_University_seal.svg.png',
-    'Northern Virginia Community College': 'https://www.waldenu.edu/-/media/Walden/partners/nova/northern-virginia-community-college.gif',
-    'University of Mary Washington': 'https://www.umw.edu/news/wp-content/uploads/sites/7/2011/10/UMW-logo.tagline_2color.jpg',
-    'Ithaca College': 'https://www.ithaca.edu/css/cs/marcom/templates/IC-2L-Left-RGB.png',
-    'The George Washington University': 'https://creativeservices.gwu.edu/sites/g/files/zaxdzs1101/f/downloads/gw_ahz_4cp_pos.png',
-};
-
 var map, popup, Popup;
 
 // Called by Maps API upon loading.
