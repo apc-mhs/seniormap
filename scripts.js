@@ -12,6 +12,7 @@ var logos = {
     'Northern Virginia Community College': 'https://www.waldenu.edu/-/media/Walden/partners/nova/northern-virginia-community-college.gif',
     'University of Mary Washington': 'https://www.umw.edu/news/wp-content/uploads/sites/7/2011/10/UMW-logo.tagline_2color.jpg',
     'Ithaca College': 'https://www.ithaca.edu/css/cs/marcom/templates/IC-2L-Left-RGB.png',
+    'The George Washington University': 'https://creativeservices.gwu.edu/sites/g/files/zaxdzs1101/f/downloads/gw_ahz_4cp_pos.png',
 };
 
 var map, popup, Popup;
