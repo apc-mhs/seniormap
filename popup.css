@@ -53,6 +53,7 @@
     font-size: 20px;
 }
 .popup-content .student-container {
+    clear: both;
 }
 .popup-content .student-container img {
     float: left;
