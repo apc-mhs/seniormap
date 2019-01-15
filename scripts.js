@@ -105,10 +105,10 @@ function initMap() {
     // TODO: Do this asynchronously
     Tabletop.init({
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
-        callback: function(students, tabletop) {
+        callback: function(data, tabletop) {
             var institutions = {};
             // TODO: Stop getting sheet data in array
-            for (student of tabletop.sheets()['raw'].toArray()) {
+            for (student of tabletop.sheets('raw').toArray()) {
                 if (!institutions[student[3]]) { // If the institution isn't already in the list
                     institutions[student[3]] = {
                         name: student[3],
@@ -125,6 +125,10 @@ function initMap() {
                     //photo: ,
                     major: student[8],
                 });
+            }
+            for (institution of tabletop.sheets('logos').all()) {
+                if (institutions[institution.name])
+                    institutions[institution.name].logo = institution.logo;
             }
             for (name in institutions) {
                 var marker = new google.maps.Marker(institutions[name]);
@@ -148,7 +152,7 @@ function details(institution) {
         institutionLogo = document.createElement('img'),
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
-    institutionLogo.src = logos[institution.name] || '';
+    institutionLogo.src = institution.logo || '';
     institutionContainer.appendChild(institutionName);
     institutionContainer.appendChild(institutionType);
     institutionContainer.appendChild(institutionLogo);
