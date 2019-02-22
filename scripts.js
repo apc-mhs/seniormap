@@ -107,6 +107,14 @@ function initMap() {
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(data, tabletop) {
             var institutions = {};
+            var coordinates = {};
+            // Turn 2D list into easily-subscriptable object
+            for (institution of tabletop.sheets('coordinates').toArray()) {
+                coordinates[institution[0]] = {
+                    lat: parseFloat(institution[1]),
+                    lng: parseFloat(institution[2]),
+                };
+            }
             // TODO: Stop getting sheet data in array
             for (student of tabletop.sheets('raw').toArray()) {
                 if (!institutions[student[3]]) { // If the institution isn't already in the list
@@ -114,10 +122,7 @@ function initMap() {
                         name: student[3],
                         type: student[2],
                         students: [],
-                        position: {
-                            lat: parseFloat(student[6]),
-                            lng: parseFloat(student[7]),
-                        },
+                        position: coordinates[student[3]],
                     }
                 }
                 institutions[student[3]].students.push({
