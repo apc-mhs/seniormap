@@ -128,7 +128,7 @@ function initMap() {
                 institutions[student[3]].students.push({
                     name: student[4] + ' ' + student[5],
                     //photo: ,
-                    major: student[8],
+                    major: student[6],
                 });
             }
             for (institution of tabletop.sheets('logos').all()) {
