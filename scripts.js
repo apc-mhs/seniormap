@@ -167,6 +167,7 @@ function details(institution) {
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
         studentPhoto.src = 'portraits/' + student.name + '.jpg';
+        studentPhoto.draggable = false;
         studentName.textContent = student.name;
         studentName.className = 'student-name';
         studentMajor.textContent = student.major;
