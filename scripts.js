@@ -1,10 +1,12 @@
 var map, popup, Popup;
+var mapElement = document.getElementById('map');
+var popupOpen = false;
 
 // Called by Maps API upon loading.
 function initMap() {
     definePopupClass();
 
-    map = new google.maps.Map(document.getElementById('map'), { // Define Map Settings
+    map = new google.maps.Map(mapElement, { // Define Map Settings
         center: {
             lat: 35,
             lng: -98
@@ -181,4 +183,23 @@ function details(institution) {
     }
     popup = new Popup(new google.maps.LatLng(institution.position.lat(), institution.position.lng()), info);
     popup.setMap(map);
+    console.log('Adding popup');
+    popupOpen = true;
+}
+
+var dragged = false;
+onmousedown = function() {
+    dragged = false;
+}
+onmousemove = function() {
+    dragged = true;
+}
+
+onmouseup = function(e) {
+    // Check that we're not clicking a marker and that there was no dragging
+    if (e.target.tagName != 'AREA'
+        && dragged == false) {
+        if (popup) popup.setMap(null);
+    }
+    dragged = false;
 }
