@@ -149,8 +149,12 @@ function initMap() {
     });
 }
 
-function details(institution) {
+function clearPopups() {
     if (popup) popup.setMap(null);
+}
+
+function details(institution) {
+    clearPopups();
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
     institutionContainer.className = 'institution-container';
@@ -199,7 +203,7 @@ onmouseup = function(e) {
     // Check that we're not clicking a marker and that there was no dragging
     if (e.target.tagName != 'AREA'
         && dragged == false) {
-        if (popup) popup.setMap(null);
+        clearPopups();
     }
     dragged = false;
 }
