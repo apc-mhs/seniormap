@@ -164,6 +164,7 @@ function details(institution) {
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
     institutionLogo.src = institution.logo || '';
+    institutionLogo.alt = institution.name + ' Logo';
     institutionContainer.appendChild(institutionName);
     institutionContainer.appendChild(institutionType);
     institutionContainer.appendChild(institutionLogo);
@@ -173,6 +174,7 @@ function details(institution) {
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
         studentPhoto.src = 'portraits/' + student.name + '.jpg';
+        studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
         studentName.className = 'student-name';
