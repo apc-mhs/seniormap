@@ -210,8 +210,8 @@ onmouseup = function(e) {
     dragged = false;
 }
 
-onkeypress = function(e) {
-    if (e.which === 27) { // Escape
+onkeydown = function(e) {
+    if (e.key === 'Escape') {
         clearPopups();
     }
 }
