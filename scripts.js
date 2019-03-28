@@ -128,9 +128,9 @@ function initMap() {
                     }
                 }
                 institutions[student[3]].students.push({
-                    name: student[4] + ' ' + student[5],
+                    name: student[3] + ' ' + student[4],
                     //photo: ,
-                    major: student[6],
+                    major: student[5],
                 });
             }
             for (institution of tabletop.sheets('logos').all()) {
