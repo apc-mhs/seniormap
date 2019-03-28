@@ -159,8 +159,8 @@ function details(institution) {
     var institutionContainer = document.createElement('div');
     institutionContainer.className = 'institution-container';
     var institutionType = document.createElement('p'),
-        institutionName = document.createElement('h3');
-        institutionLogo = document.createElement('img'),
+        institutionName = document.createElement('h3'),
+        institutionLogo = document.createElement('img');
     institutionName.textContent = institution.name;
     institutionType.textContent = institution.type;
     institutionLogo.src = institution.logo || '';
