@@ -120,14 +120,14 @@ function initMap() {
             }
             // TODO: Stop getting sheet data in array
             for (student of tabletop.sheets('raw').toArray()) {
-                if (!institutions[student[3]]) { // If the institution isn't already in the list
-                    institutions[student[3]] = {
+                if (!institutions[student[2]]) { // If the institution isn't already in the list
+                    institutions[student[2]] = {
                         name: student[2],
                         students: [],
-                        position: coordinates[student[3]],
+                        position: coordinates[student[2]],
                     }
                 }
-                institutions[student[3]].students.push({
+                institutions[student[2]].students.push({
                     name: student[3] + ' ' + student[4],
                     //photo: ,
                     major: student[5],
