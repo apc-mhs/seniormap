@@ -104,6 +104,7 @@ function initMap() {
         ]
     });
 
+    console.log('Running Tabletop query...');
     // TODO: Do this asynchronously
     Tabletop.init({
         key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
@@ -121,8 +122,7 @@ function initMap() {
             for (student of tabletop.sheets('raw').toArray()) {
                 if (!institutions[student[3]]) { // If the institution isn't already in the list
                     institutions[student[3]] = {
-                        name: student[3],
-                        type: student[2],
+                        name: student[2],
                         students: [],
                         position: coordinates[student[3]],
                     }
@@ -137,7 +137,9 @@ function initMap() {
                 if (institutions[institution.name])
                     institutions[institution.name].logo = institution.logo;
             }
+            console.log(institutions);
             for (name in institutions) {
+                console.log(name);
                 var marker = new google.maps.Marker(institutions[name]);
                 google.maps.event.addListener(marker, 'click', function() {
                     details(this);
@@ -158,15 +160,12 @@ function details(institution) {
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
     institutionContainer.className = 'institution-container';
-    var institutionType = document.createElement('p'),
-        institutionName = document.createElement('h3'),
+    var institutionName = document.createElement('h3'),
         institutionLogo = document.createElement('img');
     institutionName.textContent = institution.name;
-    institutionType.textContent = institution.type;
     institutionLogo.src = institution.logo || '';
     institutionLogo.alt = institution.name + ' Logo';
     institutionContainer.appendChild(institutionName);
-    institutionContainer.appendChild(institutionType);
     institutionContainer.appendChild(institutionLogo);
     info.appendChild(institutionContainer);
     for (student of institution.students) {
