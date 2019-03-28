@@ -129,7 +129,6 @@ function initMap() {
                 }
                 institutions[student[2]].students.push({
                     name: student[3] + ' ' + student[4],
-                    //photo: ,
                     major: student[5],
                 });
             }
@@ -139,7 +138,7 @@ function initMap() {
             }
             console.log(institutions);
             for (name in institutions) {
-                console.log(name);
+                //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
                 var marker = new google.maps.Marker(institutions[name]);
                 google.maps.event.addListener(marker, 'click', function() {
                     details(this);
