@@ -127,7 +127,7 @@ function initMap() {
                         position: coordinates[student[2].trim()],
                     }
                 }
-                institutions[student[2]].students.push({
+                institutions[student[2].trim()].students.push({
                     name: student[3].trim() + ' ' + student[4].trim(),
                     major: student[5].trim(),
                 });
