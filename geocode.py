@@ -1,3 +1,5 @@
+import geocoder
+
 while True:
     try:
         location = input('> ')
@@ -5,5 +7,5 @@ while True:
         lat, lng = tuple(g.latlng)
         print(lat)
         print(lng)
-    except:
+    except EOFError:
         break
