@@ -121,15 +121,15 @@ function initMap() {
             // TODO: Stop getting sheet data in array
             for (student of tabletop.sheets('raw').toArray()) {
                 if (!institutions[student[2]]) { // If the institution isn't already in the list
-                    institutions[student[2]] = {
-                        name: student[2],
+                    institutions[student[2].trim()] = {
+                        name: student[2].trim(),
                         students: [],
-                        position: coordinates[student[2]],
+                        position: coordinates[student[2].trim()],
                     }
                 }
                 institutions[student[2]].students.push({
-                    name: student[3] + ' ' + student[4],
-                    major: student[5],
+                    name: student[3].trim() + ' ' + student[4].trim(),
+                    major: student[5].trim(),
                 });
             }
             for (institution of tabletop.sheets('logos').all()) {
