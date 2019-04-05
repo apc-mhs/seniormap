@@ -45,13 +45,13 @@
 }
 .popup-content .institution-container {
     text-align: center;
-    padding-bottom: 5px;
 }
 .popup-content .institution-container img {
     width: 200px;
 }
 .popup-content .institution-container h3 {
     font-size: 20px;
+    margin-bottom: 5px;
 }
 .popup-content .student-container {
     clear: both;
