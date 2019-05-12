@@ -20,7 +20,7 @@
     top: 0;
     left: 0;
     /* Center the tip horizontally. */
-    transform: translate(-50%, 0);
+    transform: translate(-50%, -0.5px);
     /* The tip is a https://css-tricks.com/snippets/css/css-triangle/ */
     width: 0;
     height: 0;
