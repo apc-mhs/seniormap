@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
-{% block title %}GMHS Seniormap{% endblock %}
+{% block title %}{{ school }} Seniormap{% endblock %}
 
 {% block description %}See where GMHS seniors will be after graduation!{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/app/popup.css">
 <link rel="stylesheet" href="/static/css/app/style.css">
+<link rel="icon" type="image/png" href="/static/img/logos/{{ school }}/favicon.png">
+<link rel="icon" type="image/x-icon" href="/static/img/logos/{{ school }}/favicon.ico">
 {% endblock %}
 
-        <link rel="icon" type="image/png" href="favicon.png">
-        <link rel="icon" type="image/x-icon" href="favicon.ico">
 {% block body %}
 <div id="map"></div>
 <div id="branding">
