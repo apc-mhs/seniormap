@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gunicorn app:app
+gunicorn app:app $@
