@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}GMHS Senior Map{% endblock %}
 
-        <meta name="description" content="See where GMHS seniors will be after graduation!">
+{% block description %}See where GMHS seniors will be after graduation!{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/app/popup.css">
@@ -21,3 +21,4 @@
 <script src="/static/js/app/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1FQ56PS2iSZmeWE3mhUONtk9YqnAC9mg&callback=initMap" async defer></script>
+{% endblock %}

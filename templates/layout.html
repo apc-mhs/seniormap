@@ -5,6 +5,7 @@
         <title>{% block title %}Senior Map{% endblock %}</title>
         <meta name="viewport" content="width=device-width">
         <meta name="theme-color" content="{% block theme_color %}{% endblock %}">
+        <meta name="description" content="{% block description %}{% endblock %}">
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
         <link rel="stylesheet" href="/static/stylesheets/main.css">
         {% block head %}
@@ -12,18 +13,6 @@
     </head>
     <body>
         {% block body %}
-        <header>
-            {% block logo %}
-            <img src="/static/images/logo.png" alt="Yalebot logo">
-            {% endblock %}
-        </header>
-        <main>
-            {% block main %}
-            {% endblock %}
-        </main>
-        <footer>
-            &copy; <a href="https://erikboesen.com">Erik Boesen</a>.
-        </footer>
         {% endblock %}
     </body>
 </html>
