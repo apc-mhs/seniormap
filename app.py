@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 
 app = Flask(__name__)
@@ -14,7 +15,15 @@ def home():
     return render_template("index.html")
 
 
+class School(db.Model):
+    __tablename__ = "schools"
+    slug = db.Column(db.String(16), unique=True, primary_key=True)
+    name = db.Column(db.String(32), unique=True)
+    form = db.Column(db.String(32), unique=True)
+    sheet = db.Column(db.String(64), unique=True)
+
+
 @app.route("/<slug>")
 def map(slug):
-
-    return render_template("map.html")
+    school = School.query.get(slug)
+    return render_template("map.html", school=school)
