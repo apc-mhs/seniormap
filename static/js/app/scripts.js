@@ -107,7 +107,7 @@ function initMap() {
     console.log('Running Tabletop query...');
     // TODO: Do this asynchronously
     Tabletop.init({
-        key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
+        key: sheet,
         callback: function(data, tabletop) {
             var institutions = {};
             var coordinates = {};
