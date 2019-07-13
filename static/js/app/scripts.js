@@ -171,7 +171,7 @@ function details(institution) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
-        studentPhoto.src = 'portraits/' + student.name + '.jpg';
+        studentPhoto.src = '/static/img/portraits/' + student.name + '.jpg';
         studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
