@@ -18,20 +18,20 @@ function initMap() {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: true,
-        backgroundColor: '#333333',
+        backgroundColor: background,
         styles: [
             {
                 featureType: 'water',
                 elementType: 'geometry',
                 stylers: [{
-                    color: '#222222'
+                    color: darkBackground
                 }]
             },
             {
                 featureType: 'landscape',
                 elementType: 'geometry',
                 stylers: [{
-                    color: '#444444'
+                    color: lightBackground
                 }]
             },
             {
@@ -39,7 +39,7 @@ function initMap() {
                 elementType: 'geometry',
                 stylers: [
                     {
-                        color: '#444444'
+                        color: lightBackground
                     },
                     {
                         lightness: -37
@@ -50,7 +50,7 @@ function initMap() {
                 featureType: 'poi',
                 elementType: 'geometry',
                 stylers: [{
-                    color: '#666666'
+                    color: lighterBackground
                 }]
             },
             {
@@ -60,7 +60,7 @@ function initMap() {
                         visibility: 'on'
                     },
                     {
-                        color: '#666666'
+                        color: lighterBackground
                     },
                     {
                         weight: 2
@@ -84,7 +84,7 @@ function initMap() {
                         weight: 0.6
                     },
                     {
-                        color: '#d12727'
+                        color: accent
                     }
                 ]
             },
@@ -98,7 +98,7 @@ function initMap() {
                 featureType: 'poi.park',
                 elementType: 'geometry',
                 stylers: [{
-                    color: '#333333'
+                    color: background
                 }]
             }
         ]
