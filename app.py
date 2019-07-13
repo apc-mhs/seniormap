@@ -9,7 +9,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/<school>")
-def map(school):
-    # Logic
+@app.route("/<slug>")
+def map(slug):
+
     return render_template("map.html")

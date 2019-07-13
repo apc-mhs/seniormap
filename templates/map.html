@@ -1,23 +1,28 @@
 {% extends "layout.html" %}
-{% block title %}{{ school }} Seniormap{% endblock %}
+{% block title %}{{ name }} Seniormap{% endblock %}
 
 {% block description %}See where GMHS seniors will be after graduation!{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/static/css/app/popup.css">
 <link rel="stylesheet" href="/static/css/app/style.css">
-<link rel="icon" type="image/png" href="/static/img/logos/{{ school }}/favicon.png">
-<link rel="icon" type="image/x-icon" href="/static/img/logos/{{ school }}/favicon.ico">
+<link rel="icon" type="image/png" href="/static/img/logos/{{ slug }}/favicon.png">
+<link rel="icon" type="image/x-icon" href="/static/img/logos/{{ slug }}/favicon.ico">
 {% endblock %}
 
 {% block body %}
 <div id="map"></div>
 <div id="branding">
-    <img id="logo" src="img/gm.svg">
-    <p><a href="https://goo.gl/forms/OfaIzYScOH2ENb9A3">Submit your destination here</a></p>
+    <img id="logo" src="/static/img/logos/{{ slug }}/logo.svg" alt="{{ name }} logo">
+    <p><a href="https://goo.gl/forms/{{ form }}">Submit your destination here</a></p>
     <p>Senior project by <a href="https://erikboesen.com">Erik Boesen</a></p>
 </div>
 <script src="/static/js/app/popup.js"></script>
+<script>
+const background = '{{ background }}',
+      accent = '{{ accent }}',
+      sheet = '{{ sheet }}';
+</script>
 <script src="/static/js/app/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1FQ56PS2iSZmeWE3mhUONtk9YqnAC9mg&callback=initMap" async defer></script>
