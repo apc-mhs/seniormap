@@ -18,20 +18,20 @@ function initMap() {
         streetViewControl: false,
         rotateControl: false,
         fullscreenControl: true,
-        backgroundColor: background,
+        backgroundColor: '#333333',
         styles: [
             {
                 featureType: 'water',
                 elementType: 'geometry',
                 stylers: [{
-                    color: darkBackground
+                    color: '#222222'
                 }]
             },
             {
                 featureType: 'landscape',
                 elementType: 'geometry',
                 stylers: [{
-                    color: lightBackground
+                    color: '#444444'
                 }]
             },
             {
@@ -39,7 +39,7 @@ function initMap() {
                 elementType: 'geometry',
                 stylers: [
                     {
-                        color: lightBackground
+                        color: '#444444'
                     },
                     {
                         lightness: -37
@@ -50,7 +50,7 @@ function initMap() {
                 featureType: 'poi',
                 elementType: 'geometry',
                 stylers: [{
-                    color: lighterBackground
+                    color: '#666666'
                 }]
             },
             {
@@ -60,7 +60,7 @@ function initMap() {
                         visibility: 'on'
                     },
                     {
-                        color: lighterBackground
+                        color: '#666666'
                     },
                     {
                         weight: 2
@@ -84,7 +84,7 @@ function initMap() {
                         weight: 0.6
                     },
                     {
-                        color: accent
+                        color: '#d12727'
                     }
                 ]
             },
@@ -98,7 +98,7 @@ function initMap() {
                 featureType: 'poi.park',
                 elementType: 'geometry',
                 stylers: [{
-                    color: background
+                    color: '#333333'
                 }]
             }
         ]
@@ -107,7 +107,7 @@ function initMap() {
     console.log('Running Tabletop query...');
     // TODO: Do this asynchronously
     Tabletop.init({
-        key: sheet,
+        key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
         callback: function(data, tabletop) {
             var institutions = {};
             var coordinates = {};
@@ -171,7 +171,7 @@ function details(institution) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
-        studentPhoto.src = '/static/img/portraits/' + student.name + '.jpg';
+        studentPhoto.src = 'portraits/' + student.name + '.jpg';
         studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
