@@ -20,6 +20,9 @@ select {
 div a[rel="noopener"] img {
     display: none !important;
 }
+#map {
+    transition: filter ease 0.75s 100ms;
+}
 #branding {
     position: absolute;
     bottom: 0;
@@ -41,10 +44,13 @@ div a[rel="noopener"] img {
     left: 0;
     padding: 10px;
     color: white;
-    width: 200px;
+    width: auto;
     height: auto;
     background: #222;
 }
 #year-select {
     margin-left: 5px;
+}
+.refreshing {
+    filter: blur(1.5rem);
 }
