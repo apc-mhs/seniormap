@@ -264,10 +264,10 @@ function transitionEnd(element, transitionProperty) {
     return new Promise(function(resolve, _) {
         var callback = function(event) {
             if (event.propertyName === transitionProperty) {
-                element.removeEventListener('transitionend', callback)
-            resolve();
+                element.removeEventListener('transitionend', callback);
+                resolve();
             }
         };
-        element.addEventListener('transitionend', callback)
+        element.addEventListener('transitionend', callback);
     });
 }
