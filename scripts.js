@@ -1,7 +1,7 @@
 var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
-var year = '2020';
+var currentYear = '2020';
 var popupOpen = false;
 
 var dataDocuments = {
@@ -116,10 +116,11 @@ function initMap() {
     fetchTabletopData();
 }
 
-function fetchTabletopData() {
+function fetchTabletopData(year) {
     var fetchFunction = function fetchData(resolve, reject) {
         if (downloadedYears[year] !== undefined) {
             clearMarkers();
+            placeMarkers(downloadedYears[year]);
             resolve();
             return;
         }
@@ -134,6 +135,7 @@ function fetchTabletopData() {
             callback: function(data, tabletop) {
                 clearMarkers();
                 var institutions = buildMarkers(tabletop)
+                placeMarkers(institutions);
                 // Save the data in an object for caching purposes
                 downloadedYears[year] = institutions;
                 resolve();
@@ -145,14 +147,13 @@ function fetchTabletopData() {
     return new Promise(fetchFunction);
 }
 
-function refreshMap() {
+function refreshMap(year) {
     mapElement.classList.add('refreshing');
     clearPopups();
     Promise.all([
-        fetchTabletopData(), 
+        fetchTabletopData(year), 
         transitionEnd(mapElement, 'filter')
     ]).then(function() {
-        placeMarkers(downloadedYears[year]);
         mapElement.classList.remove('refreshing');
     });
 }
@@ -273,9 +274,9 @@ onkeydown = function(e) {
 }
 
 yearSelect.addEventListener('change', (event) => {
-    if (year != event.target.value) {
-        year = event.target.value;
-        refreshMap();
+    if (currentYear != event.target.value) {
+        currentYear = event.target.value;
+        refreshMap(currentYear);
     }
 });
 

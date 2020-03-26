@@ -21,7 +21,7 @@ div a[rel="noopener"] img {
     display: none !important;
 }
 #map {
-    transition: filter ease 0.75s 100ms;
+    transition: filter ease 0.75s;
 }
 #branding {
     position: absolute;
