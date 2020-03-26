@@ -1,6 +1,13 @@
-var map, popup, Popup;
+var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
+var yearSelect = document.getElementById('year-select');
+var year = '2020';
 var popupOpen = false;
+
+var dataDocuments = {
+    '2019': '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
+    '2020': '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'
+}
 
 // Called by Maps API upon loading.
 function initMap() {
@@ -104,54 +111,86 @@ function initMap() {
         ]
     });
 
-    console.log('Running Tabletop query...');
-    // TODO: Do this asynchronously
-    Tabletop.init({
-        key: '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
-        callback: function(data, tabletop) {
-            var institutions = {};
-            var coordinates = {};
-            // Turn 2D list into easily-subscriptable object
-            for (institution of tabletop.sheets('coordinates').toArray()) {
-                coordinates[institution[0]] = {
-                    lat: parseFloat(institution[1]),
-                    lng: parseFloat(institution[2]),
-                };
-            }
-            // TODO: Stop getting sheet data in array
-            for (student of tabletop.sheets('raw').toArray()) {
-                if (!institutions[student[2]]) { // If the institution isn't already in the list
-                    institutions[student[2].trim()] = {
-                        name: student[2].trim(),
-                        students: [],
-                        position: coordinates[student[2].trim()],
-                    }
+    fetchTabletopData();
+}
+
+function fetchTabletopData() {
+    var fetchFunction = function fetchData(resolve, reject) {
+        console.log('Running Tabletop query...');
+        // TODO: Do this asynchronously
+        Tabletop.init({
+            key: dataDocuments[year],
+            error: function() {
+                reject();
+            },
+            callback: function(data, tabletop) {
+                clearMarkers();
+                var institutions = {};
+                var coordinates = {};
+                // Turn 2D list into easily-subscriptable object
+                for (institution of tabletop.sheets('coordinates').toArray()) {
+                    coordinates[institution[0]] = {
+                        lat: parseFloat(institution[1]),
+                        lng: parseFloat(institution[2]),
+                    };
                 }
-                institutions[student[2].trim()].students.push({
-                    name: student[3].trim() + ' ' + student[4].trim(),
-                    major: student[5].trim(),
-                });
-            }
-            for (institution of tabletop.sheets('logos').all()) {
-                if (institutions[institution.name])
-                    institutions[institution.name].logo = institution.logo;
-            }
-            console.log(institutions);
-            for (name in institutions) {
-                //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
-                var marker = new google.maps.Marker(institutions[name]);
-                google.maps.event.addListener(marker, 'click', function() {
-                    details(this);
-                });
-                marker.setMap(map);
-            }
-        },
-        simpleSheet: true,
+                // TODO: Stop getting sheet data in array
+                for (student of tabletop.sheets('raw').toArray()) {
+                    if (!institutions[student[2]]) { // If the institution isn't already in the list
+                        institutions[student[2].trim()] = {
+                            name: student[2].trim(),
+                            students: [],
+                            position: coordinates[student[2].trim()],
+                        }
+                    }
+                    institutions[student[2].trim()].students.push({
+                        name: student[3].trim() + ' ' + student[4].trim(),
+                        major: student[5].trim(),
+                    });
+                }
+                for (institution of tabletop.sheets('logos').all()) {
+                    if (institutions[institution.name])
+                        institutions[institution.name].logo = institution.logo;
+                }
+                console.log(institutions);
+                for (name in institutions) {
+                    //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
+                    var marker = new google.maps.Marker(institutions[name]);
+                    google.maps.event.addListener(marker, 'click', function() {
+                        details(this);
+                    });
+                    marker.setMap(map);
+                    markers.push(marker);
+                }
+                resolve();
+            },
+            simpleSheet: true,
+        });
+    }
+
+    return new Promise(fetchFunction);
+}
+
+function refreshMap() {
+    mapElement.classList.add('refreshing');
+    clearPopups();
+    Promise.all([
+        fetchTabletopData(), 
+        transitionEnd(mapElement, 'filter')
+    ]).then(function() {
+        mapElement.classList.remove('refreshing')
     });
 }
 
 function clearPopups() {
     if (popup) popup.setMap(null);
+}
+
+function clearMarkers() {
+    for (marker of markers) {
+        marker.setMap(null);
+    }
+    markers = [];
 }
 
 function details(institution) {
@@ -171,7 +210,7 @@ function details(institution) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
-        studentPhoto.src = 'portraits/' + student.name + '.jpg';
+        studentPhoto.src = 'portraits/' + year + '/' + student.name + '.jpg';
         studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
@@ -212,4 +251,23 @@ onkeydown = function(e) {
     if (e.key === 'Escape') {
         clearPopups();
     }
+}
+
+yearSelect.addEventListener('change', (event) => {
+    if (year != event.target.value) {
+        year = event.target.value;
+        refreshMap();
+    }
+});
+
+function transitionEnd(element, transitionProperty) {
+    return new Promise(function(resolve, _) {
+        var callback = function(event) {
+            if (event.propertyName === transitionProperty) {
+                element.removeEventListener('transitionend', callback)
+            resolve();
+            }
+        };
+        element.addEventListener('transitionend', callback)
+    });
 }
