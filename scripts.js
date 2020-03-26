@@ -230,7 +230,7 @@ function details(institution) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
-        studentPhoto.src = 'portraits/' + year + '/' + student.name + '.jpg';
+        studentPhoto.src = 'portraits/' + currentYear + '/' + student.name + '.jpg';
         studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
