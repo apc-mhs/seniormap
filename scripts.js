@@ -9,6 +9,8 @@ var dataDocuments = {
     '2020': '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'
 }
 
+var downloadedYears = {};
+
 // Called by Maps API upon loading.
 function initMap() {
     definePopupClass();
@@ -116,6 +118,12 @@ function initMap() {
 
 function fetchTabletopData() {
     var fetchFunction = function fetchData(resolve, reject) {
+        if (downloadedYears[year] !== undefined) {
+            clearMarkers();
+            resolve();
+            return;
+        }
+
         console.log('Running Tabletop query...');
         // TODO: Do this asynchronously
         Tabletop.init({
@@ -125,43 +133,9 @@ function fetchTabletopData() {
             },
             callback: function(data, tabletop) {
                 clearMarkers();
-                var institutions = {};
-                var coordinates = {};
-                // Turn 2D list into easily-subscriptable object
-                for (institution of tabletop.sheets('coordinates').toArray()) {
-                    coordinates[institution[0]] = {
-                        lat: parseFloat(institution[1]),
-                        lng: parseFloat(institution[2]),
-                    };
-                }
-                // TODO: Stop getting sheet data in array
-                for (student of tabletop.sheets('raw').toArray()) {
-                    if (!institutions[student[2]]) { // If the institution isn't already in the list
-                        institutions[student[2].trim()] = {
-                            name: student[2].trim(),
-                            students: [],
-                            position: coordinates[student[2].trim()],
-                        }
-                    }
-                    institutions[student[2].trim()].students.push({
-                        name: student[3].trim() + ' ' + student[4].trim(),
-                        major: student[5].trim(),
-                    });
-                }
-                for (institution of tabletop.sheets('logos').all()) {
-                    if (institutions[institution.name])
-                        institutions[institution.name].logo = institution.logo;
-                }
-                console.log(institutions);
-                for (name in institutions) {
-                    //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
-                    var marker = new google.maps.Marker(institutions[name]);
-                    google.maps.event.addListener(marker, 'click', function() {
-                        details(this);
-                    });
-                    marker.setMap(map);
-                    markers.push(marker);
-                }
+                var institutions = buildMarkers(tabletop)
+                // Save the data in an object for caching purposes
+                downloadedYears[year] = institutions;
                 resolve();
             },
             simpleSheet: true,
@@ -178,12 +152,57 @@ function refreshMap() {
         fetchTabletopData(), 
         transitionEnd(mapElement, 'filter')
     ]).then(function() {
-        mapElement.classList.remove('refreshing')
+        placeMarkers(downloadedYears[year]);
+        mapElement.classList.remove('refreshing');
     });
 }
 
 function clearPopups() {
     if (popup) popup.setMap(null);
+}
+
+function buildMarkers(tabletop) {
+    var institutions = {};
+    var coordinates = {};
+    // Turn 2D list into easily-subscriptable object
+    for (institution of tabletop.sheets('coordinates').toArray()) {
+        coordinates[institution[0]] = {
+            lat: parseFloat(institution[1]),
+            lng: parseFloat(institution[2]),
+        };
+    }
+    // TODO: Stop getting sheet data in array
+    for (student of tabletop.sheets('raw').toArray()) {
+        if (!institutions[student[2]]) { // If the institution isn't already in the list
+            institutions[student[2].trim()] = {
+                name: student[2].trim(),
+                students: [],
+                position: coordinates[student[2].trim()],
+            }
+        }
+        institutions[student[2].trim()].students.push({
+            name: student[3].trim() + ' ' + student[4].trim(),
+            major: student[5].trim(),
+        });
+    }
+    for (institution of tabletop.sheets('logos').all()) {
+        if (institutions[institution.name])
+            institutions[institution.name].logo = institution.logo;
+    }
+    console.log(institutions);
+    return institutions;
+}
+
+function placeMarkers(institutions) {
+    for (name in institutions) {
+        //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
+        var marker = new google.maps.Marker(institutions[name]);
+        google.maps.event.addListener(marker, 'click', function() {
+            details(this);
+        });
+        marker.setMap(map);
+        markers.push(marker);
+    }
 }
 
 function clearMarkers() {
