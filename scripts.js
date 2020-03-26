@@ -113,7 +113,7 @@ function initMap() {
         ]
     });
 
-    fetchTabletopData();
+    fetchTabletopData(currentYear);
 }
 
 function fetchTabletopData(year) {
