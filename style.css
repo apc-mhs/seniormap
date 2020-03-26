@@ -10,6 +10,11 @@ body {
     font-size: 16px;
     font-family: 'Lato', sans-serif;
 }
+select {
+    background-color: #222;
+    color: white;
+    font-size: 15px;
+}
 /* Google stuff */
 .gmnoscreen, .gmnoprint a, .gm-style-cc,
 div a[rel="noopener"] img {
@@ -29,4 +34,17 @@ div a[rel="noopener"] img {
 }
 #logo {
     width: 100%;
+}
+#map-options {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    color: white;
+    width: 200px;
+    height: auto;
+    background: #222;
+}
+#year-select {
+    margin-left: 5px;
 }
