@@ -173,23 +173,32 @@ function buildMarkers(tabletop) {
         };
     }
     // TODO: Stop getting sheet data in array
-    for (student of tabletop.sheets('raw').toArray()) {
-        if (!institutions[student[2]]) { // If the institution isn't already in the list
-            institutions[student[2].trim()] = {
-                name: student[2].trim(),
+    // I messed up the ordering of the data in the years 2019 and 2020
+    // Now we have to use the names of each field to extract info rather than position...
+    for (student of tabletop.sheets('raw').all()) {
+        if (!institutions[student['Institution name']]) { // If the institution isn't already in the list
+            if (!coordinates[student['Institution name']]) {
+                console.error('No location data found for Institution: ' + student['Institution name']);
+            }
+
+            institutions[student['Institution name'].trim()] = {
+                name: student['Institution name'].trim(),
                 students: [],
-                position: coordinates[student[2].trim()],
+                position: coordinates[student['Institution name'].trim()],
             }
         }
-        institutions[student[2].trim()].students.push({
-            name: student[3].trim() + ' ' + student[4].trim(),
-            major: student[5].trim(),
+        institutions[student['Institution name'].trim()].students.push({
+            name: student['First name'].trim() + ' ' + student['Last name'].trim(),
+            major: student['Intended major(s) or field(s) of study'].trim(),
         });
     }
+
     for (institution of tabletop.sheets('logos').all()) {
-        if (institutions[institution.name])
+        if (institutions[institution.name]) {
             institutions[institution.name].logo = institution.logo;
+        }
     }
+
     console.log(institutions);
     return institutions;
 }
@@ -290,4 +299,12 @@ function transitionEnd(element, transitionProperty) {
         };
         element.addEventListener('transitionend', callback);
     });
+}
+
+function debugInstitutionLogos() {
+    for (name in downloadedYears[currentYear]) {
+        if (!downloadedYears[currentYear][name].logo) {
+            console.warn('No logo found for Institution: ' + name);
+        }
+    }
 }
