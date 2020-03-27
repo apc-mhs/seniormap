@@ -54,3 +54,12 @@ div a[rel="noopener"] img {
 .refreshing {
     filter: blur(1.5rem);
 }
+@media (max-width: 950px) {
+    .branding-info {
+        display: none;
+    }
+    #branding {
+        width: 100px;
+        font-size: 13px;
+    }
+}
