@@ -113,14 +113,13 @@ function initMap() {
         ]
     });
 
-    fetchTabletopData(currentYear);
+    fetchTabletopData(currentYear).then(() => placeMarkers(downloadedYears[currentYear]));
 }
 
 function fetchTabletopData(year) {
     var fetchFunction = function fetchData(resolve, reject) {
         if (downloadedYears[year] !== undefined) {
             clearMarkers();
-            placeMarkers(downloadedYears[year]);
             resolve();
             return;
         }
@@ -135,7 +134,6 @@ function fetchTabletopData(year) {
             callback: function(data, tabletop) {
                 clearMarkers();
                 var institutions = buildMarkers(tabletop)
-                placeMarkers(institutions);
                 // Save the data in an object for caching purposes
                 downloadedYears[year] = institutions;
                 resolve();
@@ -151,7 +149,11 @@ function refreshMap(year) {
     mapElement.classList.add('refreshing');
     clearPopups();
     Promise.all([
-        fetchTabletopData(year), 
+        // Minimum delay of 300ms before, then, placing new markers
+        Promise.all([
+            fetchTabletopData(year),
+            sleep(300)
+        ]).then(() => placeMarkers(downloadedYears[year])),
         transitionEnd(mapElement, 'filter')
     ]).then(function() {
         mapElement.classList.remove('refreshing');
@@ -299,6 +301,10 @@ function transitionEnd(element, transitionProperty) {
         };
         element.addEventListener('transitionend', callback);
     });
+}
+
+function sleep(millis) {
+    return new Promise((resolve, _) => setTimeout(resolve, millis));
 }
 
 function debugInstitutionLogos() {
