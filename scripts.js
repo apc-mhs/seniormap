@@ -315,10 +315,10 @@ function debugInstitutionLogos() {
     }
 }
 
-function debugPortraits() {
+function debugPortraits(baseurl) {
     for (name in downloadedYears[currentYear]) {
         for (student of downloadedYears[currentYear][name].students) {
-            fetch('/portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
+            fetch(baseurl + '/portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
                 .catch(() => console.err('Portrait not found for Student: ' + student.name));
         }
     }
