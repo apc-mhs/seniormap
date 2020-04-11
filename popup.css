@@ -72,19 +72,27 @@
     }
     .popup-content .students-list {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        writing-mode: vertical-lr;
         flex-wrap: wrap;
         max-height: 315px;
-        width: 100%; /* Normal width of popper */
-        justify-content: start;
+        justify-content: space-between;
         align-content: start; /* Spacing between lines */
         align-items: start;
         width: max-content;
+        height: auto;
     }
     .popup-content .student-container {
+        writing-mode: horizontal-tb;
         flex: 0 0 auto;
+        height: auto;
         width: 200px;
-        height: 100%;
+    }
+    .popup-content .institution-container {
+        margin: 0px auto;
+        width: max-content;
+    }
+    .popup-content {
         width: max-content;
     }
 }
