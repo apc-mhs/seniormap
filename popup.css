@@ -3,7 +3,7 @@
     height: 0;
     position: absolute;
     /* The max width of the info window. */
-    width: 200px;
+    width: auto;
 }
 /* The bubble is anchored above the tip. */
 .popup {
@@ -45,6 +45,7 @@
 }
 .popup-content .institution-container {
     text-align: center;
+    width: min-content;
 }
 .popup-content .institution-container img {
     width: 200px;
@@ -65,3 +66,26 @@
 .popup-content .student-container .student-name {
     font-style: italic;
 }
+@media (min-width: 950px) {
+    .popup-tip {
+        width: min-content;
+    }
+    .popup-content .students-list {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        max-height: 315px;
+        width: 100%; /* Normal width of popper */
+        justify-content: start;
+        align-content: start; /* Spacing between lines */
+        align-items: start;
+        width: max-content;
+    }
+    .popup-content .student-container {
+        flex: 0 0 auto;
+        width: 200px;
+        height: 100%;
+        width: max-content;
+    }
+}
+

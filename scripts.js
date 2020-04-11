@@ -237,6 +237,8 @@ function details(institution) {
     institutionContainer.appendChild(institutionName);
     institutionContainer.appendChild(institutionLogo);
     info.appendChild(institutionContainer);
+    var studentsList = document.createElement('div');
+    studentsList.className = 'students-list';
     for (student of institution.students) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
@@ -253,11 +255,13 @@ function details(institution) {
         studentContainer.appendChild(studentPhoto);
         studentContainer.appendChild(studentName);
         studentContainer.appendChild(studentMajor);
-        info.appendChild(studentContainer);
+        studentsList.appendChild(studentContainer);
     }
+    info.appendChild(studentsList);
     popup = new Popup(new google.maps.LatLng(institution.position.lat(), institution.position.lng()), info);
     popup.setMap(map);
     console.log('Adding popup');
+    console.log(popup);
     popupOpen = true;
 }
 
