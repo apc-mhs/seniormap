@@ -3,7 +3,7 @@
     height: 0;
     position: absolute;
     /* The max width of the info window. */
-    width: 100%;
+    width: 200px;
 }
 /* The bubble is anchored above the tip. */
 .popup {
@@ -93,5 +93,4 @@
         width: calc(200px * var(--num-columns));
     }
 }
-
 
