@@ -3,7 +3,7 @@
     height: 0;
     position: absolute;
     /* The max width of the info window. */
-    width: auto;
+    width: 100%;
 }
 /* The bubble is anchored above the tip. */
 .popup {
@@ -37,7 +37,7 @@
     transform: translate(-50%, -100%);
     /* Style the info window. */
     background-color: white;
-    overflow-y: auto;
+    overflow: hidden;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
     color: #333;
@@ -45,7 +45,6 @@
 }
 .popup-content .institution-container {
     text-align: center;
-    width: min-content;
 }
 .popup-content .institution-container img {
     width: 200px;
@@ -68,12 +67,11 @@
 }
 @media (min-width: 950px) {
     .popup-tip {
-        width: min-content;
+        width: 100%;
     }
     .popup-content .students-list {
         display: flex;
-        flex-direction: row;
-        writing-mode: vertical-lr;
+        flex-direction: column;
         flex-wrap: wrap;
         max-height: 315px;
         justify-content: space-between;
@@ -83,17 +81,17 @@
         height: auto;
     }
     .popup-content .student-container {
-        writing-mode: horizontal-tb;
         flex: 0 0 auto;
         height: auto;
         width: 200px;
     }
     .popup-content .institution-container {
         margin: 0px auto;
-        width: max-content;
+        max-width: calc(200px * var(--num-columns));
     }
     .popup-content {
-        width: max-content;
+        width: calc(200px * var(--num-columns));
     }
 }
+
 
