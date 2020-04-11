@@ -258,10 +258,10 @@ function details(institution) {
         studentsList.appendChild(studentContainer);
     }
     info.appendChild(studentsList);
+    info.style.setProperty('--num-columns', Math.ceil(studentsList.children.length / 5));
     popup = new Popup(new google.maps.LatLng(institution.position.lat(), institution.position.lng()), info);
     popup.setMap(map);
     console.log('Adding popup');
-    console.log(popup);
     popupOpen = true;
 }
 
