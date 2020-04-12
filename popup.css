@@ -91,6 +91,7 @@
     }
     .popup-content {
         width: calc(200px * var(--num-columns));
+        box-sizing: content-box;
     }
 }
 
