@@ -74,7 +74,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         max-height: 365px;
-        justify-content: space-between;
+        justify-content: start;
         align-content: start; /* Spacing between lines */
         align-items: start;
         width: max-content;
