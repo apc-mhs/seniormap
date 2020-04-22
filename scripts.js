@@ -1,6 +1,7 @@
 var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
+var precedenceSelect = document.getElementById('cover-select');
 var currentYear = '2020';
 var popupOpen = false;
 
@@ -215,6 +216,7 @@ function placeMarkers(institutions) {
         marker.setMap(map);
         markers.push(marker);
     }
+    setMarkerPrecedence(precedenceSelect.value == 'Bottom');
 }
 
 function clearMarkers() {
@@ -294,6 +296,25 @@ yearSelect.addEventListener('change', (event) => {
         refreshMap(currentYear);
     }
 });
+
+precedenceSelect.addEventListener('change', (event) => {
+    setMarkerPrecedence(event.target.value == 'Bottom');
+});
+
+function setMarkerPrecedence(bottom) {
+    let bottomMultiplier = bottom ? -1 : 1;
+
+    let sortFunction = function(a, b) {
+        if (a.internalPosition && b.internalPosition) {
+            return bottomMultiplier * (a.internalPosition.lat() - b.internalPosition.lat())
+        }
+    };
+    markers.sort(sortFunction);
+
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setZIndex(i);
+    }
+}
 
 function transitionEnd(element, transitionProperty) {
     return new Promise(function(resolve, _) {
