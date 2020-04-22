@@ -44,15 +44,59 @@ div a[rel="noopener"] img {
     left: 0;
     padding: 10px;
     color: white;
-    width: auto;
+    width: 242.69px;
     height: auto;
     background: #222;
 }
-#year-select {
+#map-options label {
+    clear: both;
+    float: left;
+}
+.options-select {
+    float: left;
     margin-left: 5px;
 }
 .refreshing {
     filter: blur(1.5rem);
+}
+#map-options #dropdown-toggle, #map-options #dropdown-toggle-arrow {
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+#map-options #dropdown-toggle {
+    opacity: 0;
+}
+#map-options #dropdown-toggle:checked + #dropdown-toggle-arrow {
+    transform: rotate(180deg);
+}
+#map-options #dropdown-toggle-arrow {
+    pointer-events: none;
+    transition: transform 250ms ease;
+}
+#map-options-dropdown {
+    position: absolute;
+    background-color: #222;
+    padding: 10px;
+    width: 242.69px;
+    top: 100%;
+    left: 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transition: transform 250ms ease;
+    transform-origin: center top 0;
+    pointer-events: none;
+}
+#map-options-dropdown > p {
+    text-align: center;
+    margin-bottom: 5px;
+}
+#map-options #dropdown-toggle:checked ~ #map-options-dropdown {
+    pointer-events: all;
+    opacity: 1;
+    transform: scaleY(1);
 }
 @media (max-width: 950px) {
     .branding-info {
