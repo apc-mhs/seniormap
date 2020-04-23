@@ -305,9 +305,10 @@ function setMarkerPrecedence(bottom) {
     let bottomMultiplier = bottom ? -1 : 1;
 
     let sortFunction = function(a, b) {
-        if (a.internalPosition && b.internalPosition) {
-            return bottomMultiplier * (a.internalPosition.lat() - b.internalPosition.lat())
-        }
+        let aPos = a.position || {lat: () => 0};
+        let bPos = b.position || {lat: () => 0};
+
+        return bottomMultiplier * (aPos.lat() - bPos.lat());
     };
     markers.sort(sortFunction);
 
