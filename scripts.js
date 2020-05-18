@@ -216,9 +216,10 @@ function placeMarkers(institutions) {
             details(this);
 
             if (panToMarkers) {
+                var scale = 1 / (1 << map.getZoom());
                 var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
-                var defaultOffset = 10;
-                var offsetPerStudent = 1.25;
+                var defaultOffset = 80 * scale;
+                var offsetPerStudent = 40 * scale;
                 
                 worldCoordinate.y -= defaultOffset + 
                     (offsetPerStudent * Math.min(5, this.students.length));
