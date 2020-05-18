@@ -14,6 +14,7 @@ var dataDocuments = {
 
 var downloadedYears = {};
 
+var TILE_SIZE = 256;
 // Called by Maps API upon loading.
 function initMap() {
     definePopupClass();
@@ -213,15 +214,19 @@ function placeMarkers(institutions) {
         //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
         let marker = new google.maps.Marker(institutions[name]);
         google.maps.event.addListener(marker, 'click', function() {
-            let popup = details(this);
+            details(this);
+            
             if (panToMarkers) {
-                var scale = 1 / (1 << map.getZoom());
-                var defaultOffset = 110 * scale;
-                var offsetPerStudent = 30 * scale;
-                let lat = popup.position.lat() + defaultOffset + 
+                var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
+                var defaultOffset = 10;
+                var offsetPerStudent = 1.25;
+                
+                worldCoordinate.y -= defaultOffset + 
                     (offsetPerStudent * Math.min(5, this.students.length));
+                worldCoordinate.y = Math.max(0, worldCoordinate.y);
 
-                map.panTo({ lat: clamp(lat, 89, -89), lng: marker.position.lng() });
+                var latLng = map.getProjection().fromPointToLatLng(worldCoordinate);
+                map.panTo(latLng);
             }
         });
         marker.setMap(map);
@@ -276,7 +281,6 @@ function details(institution) {
     popup.setMap(map);
     console.log('Adding popup');
     popupOpen = true;
-    return popup;
 }
 
 var dragged = false;
