@@ -1,8 +1,10 @@
 var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
+var panCheckbox = document.getElementById('pan-option');
 var precedenceSelect = document.getElementById('cover-select');
 var currentYear = '2020';
+var panToMarkers = true;
 var popupOpen = false;
 
 var dataDocuments = {
@@ -209,9 +211,18 @@ function buildMarkers(tabletop) {
 function placeMarkers(institutions) {
     for (name in institutions) {
         //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
-        var marker = new google.maps.Marker(institutions[name]);
+        let marker = new google.maps.Marker(institutions[name]);
         google.maps.event.addListener(marker, 'click', function() {
-            details(this);
+            let popup = details(this);
+            if (panToMarkers) {
+                var scale = 1 / (1 << map.getZoom());
+                var defaultOffset = 110 * scale;
+                var offsetPerStudent = 30 * scale;
+                let lat = popup.position.lat() + defaultOffset + 
+                    (offsetPerStudent * Math.min(5, this.students.length));
+
+                map.panTo({ lat: clamp(lat, 89, -89), lng: marker.position.lng() });
+            }
         });
         marker.setMap(map);
         markers.push(marker);
@@ -265,6 +276,7 @@ function details(institution) {
     popup.setMap(map);
     console.log('Adding popup');
     popupOpen = true;
+    return popup;
 }
 
 var dragged = false;
@@ -290,11 +302,15 @@ onkeydown = function(e) {
     }
 }
 
-yearSelect.addEventListener('change', (event) => {
+yearSelect.addEventListener('change', function (event) {
     if (currentYear != event.target.value) {
         currentYear = event.target.value;
         refreshMap(currentYear);
     }
+});
+
+panCheckbox.addEventListener('click', function (event) {
+    panToMarkers = event.target.checked;
 });
 
 precedenceSelect.addEventListener('change', (event) => {
@@ -315,6 +331,10 @@ function setMarkerPrecedence(bottom) {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setZIndex(i);
     }
+}
+
+function clamp(value, max, min) {
+    return Math.min(max, Math.max(value, min));
 }
 
 function transitionEnd(element, transitionProperty) {

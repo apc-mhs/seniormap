@@ -48,13 +48,8 @@ div a[rel="noopener"] img {
     height: auto;
     background: #222;
 }
-#map-options label {
-    clear: both;
-    float: left;
-}
-.options-select {
-    float: left;
-    margin-left: 5px;
+#map-options input[type="checkbox"] {
+    vertical-align: baseline;
 }
 .refreshing {
     filter: blur(1.5rem);
@@ -91,7 +86,17 @@ div a[rel="noopener"] img {
 }
 #map-options-dropdown > p {
     text-align: center;
+    margin-bottom: 7px;
+}
+#map-options-dropdown > div.map-option {
+    width: max-content;
+    height: auto;
+}
+#map-options-dropdown > div.map-option:not(:last-child) {
     margin-bottom: 5px;
+}
+div.map-option > :not(label) {
+    margin-left: 5px;
 }
 #map-options #dropdown-toggle:checked ~ #map-options-dropdown {
     pointer-events: all;

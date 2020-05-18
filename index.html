@@ -25,11 +25,17 @@
             <img id="dropdown-toggle-arrow" src="drop-down-arrow.svg">
             <div id="map-options-dropdown">
                 <p>Map Options</p>
-                <label for="cover-select" class="branding-info">Marker Precedence: </label>
-                <select id="cover-select" class="options-select branding-info">
-                    <option>Bottom</option>
-                    <option>Top</option>
-                </select>
+                <div class="map-option">
+                    <label for="pan-option">Pan To Markers: </label>
+                    <input id="pan-option" type="checkbox" class="options-select" checked>
+                </div>
+                <div class="map-option">
+                    <label for="cover-select">Marker Precedence: </label>
+                    <select id="cover-select" class="options-select">
+                        <option>Bottom</option>
+                        <option>Top</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div id="branding">
@@ -42,5 +48,5 @@
     <script src="popup.js"></script>
     <script src="scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2DiuOwQf-LdnOSNGW-mhlZt024RO0eL8&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhHWP9gRmHXt5ZWpDSoJqe-jv3pHlMlik&callback=initMap" async defer></script>
 </html>
