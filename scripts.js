@@ -14,7 +14,6 @@ var dataDocuments = {
 
 var downloadedYears = {};
 
-var TILE_SIZE = 256;
 // Called by Maps API upon loading.
 function initMap() {
     definePopupClass();
@@ -215,7 +214,7 @@ function placeMarkers(institutions) {
         let marker = new google.maps.Marker(institutions[name]);
         google.maps.event.addListener(marker, 'click', function() {
             details(this);
-            
+
             if (panToMarkers) {
                 var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
                 var defaultOffset = 10;
