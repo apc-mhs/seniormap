@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/page.css">
+{% endblock %}
+
+{% block body %}
+<header>
+    <img src="/static/img/logos/gmhs/logo.svg" alt="Seniormap logo">
+</header>
+<main>
+    {% block main %}
+    {% endblock %}
+</main>
+<footer>
+    &copy; <a href="https://erikboesen.com">Erik Boesen</a>.
+</footer>
+{% endblock %}
