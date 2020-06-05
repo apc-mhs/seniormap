@@ -1,0 +1,67 @@
+/* The location pointed to by the popup tip. */
+.popup-tip {
+    height: 0;
+    position: absolute;
+    /* The max width of the info window. */
+    width: 200px;
+}
+/* The bubble is anchored above the tip. */
+.popup {
+    position: absolute;
+    width: 100%;
+    bottom: /* TIP_HEIGHT= */ 20px;
+    left: 0;
+    pointer-events: none;
+}
+/* Draw the tip. */
+.popup::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Center the tip horizontally. */
+    transform: translate(-50%, -0.5px);
+    /* The tip is a https://css-tricks.com/snippets/css/css-triangle/ */
+    width: 0;
+    height: 0;
+    /* The tip is 8px high, and 12px wide. */
+    border-left: 105px solid transparent;
+    border-right: 105px solid transparent;
+    border-top: /* TIP_HEIGHT= */ 20px solid white;
+}
+/* The popup bubble itself. */
+.popup-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -100%);
+    /* Style the info window. */
+    background-color: white;
+    overflow-y: auto;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    color: #333;
+    padding: 5px;
+}
+.popup-content .institution-container {
+    text-align: center;
+}
+.popup-content .institution-container img {
+    width: 200px;
+    margin-bottom: 1px;
+}
+.popup-content .institution-container h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.popup-content .student-container {
+    clear: both;
+}
+.popup-content .student-container img {
+    float: left;
+    width: 50px;
+    margin-right: 5px;
+}
+.popup-content .student-container .student-name {
+    font-style: italic;
+}
