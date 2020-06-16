@@ -9,7 +9,5 @@ bp = Blueprint('map', __name__, url_prefix='/map', template_folder='../templates
 
 @bp.route('/map/<slug>')
 def map(slug):
-    school = School.query.get(slug)
-    if school is None:
-        abort(404)
+    school = School.query.get_or_404(slug)
     return render_template('map.html', school=school)
