@@ -3,15 +3,31 @@ var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
 var panCheckbox = document.getElementById('pan-option');
 var precedenceSelect = document.getElementById('cover-select');
-var currentYear = '2020';
+
+var today = new Date();
+// The yearActivationMonth determines the month that a specific year is added to
+// the yearSelect dropdown. The value "4" means that a year will become available
+// in May
+var yearActivationMonth = 4;
+var currentYear = new Date(
+    today.getFullYear(),
+    today.getMonth() - yearActivationMonth,
+    today.getDate()
+).getFullYear().toString();
+// Using a default select option prevents a jump in the width of the select element
+var defaultSelectOption = document.createElement('option');
+defaultSelectOption.textContent = currentYear;
+yearSelect.appendChild(defaultSelectOption);
+
 var panToMarkers = true;
 var popupOpen = false;
 
-var dataDocuments = {
-    '2019': '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE',
-    '2020': '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'
-}
+var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
+var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
+var dataDocuments = new Map();
 
+var logos = new Map();
+var coordinates = {};
 var downloadedYears = {};
 
 // Called by Maps API upon loading.
@@ -31,135 +47,95 @@ function initMap() {
         rotateControl: false,
         fullscreenControl: true,
         backgroundColor: '#333333',
-        styles: [
-            {
-                featureType: 'water',
-                elementType: 'geometry',
-                stylers: [{
-                    color: '#222222'
-                }]
-            },
-            {
-                featureType: 'landscape',
-                elementType: 'geometry',
-                stylers: [{
-                    color: '#444444'
-                }]
-            },
-            {
-                featureType: 'road',
-                elementType: 'geometry',
-                stylers: [
-                    {
-                        color: '#444444'
-                    },
-                    {
-                        lightness: -37
-                    }
-                ]
-            },
-            {
-                featureType: 'poi',
-                elementType: 'geometry',
-                stylers: [{
-                    color: '#666666'
-                }]
-            },
-            {
-                elementType: 'labels.text.stroke',
-                stylers: [
-                    {
-                        visibility: 'on'
-                    },
-                    {
-                        color: '#666666'
-                    },
-                    {
-                        weight: 2
-                    },
-                    {
-                        gamma: 0.84
-                    }
-                ]
-            },
-            {
-                elementType: 'labels.text.fill',
-                stylers: [{
-                    color: '#ffffff'
-                }]
-            },
-            {
-                featureType: 'administrative',
-                elementType: 'geometry',
-                stylers: [
-                    {
-                        weight: 0.6
-                    },
-                    {
-                        color: '#d12727'
-                    }
-                ]
-            },
-            {
-                elementType: 'labels.icon',
-                stylers: [{
-                    visibility: 'off'
-                }]
-            },
-            {
-                featureType: 'poi.park',
-                elementType: 'geometry',
-                stylers: [{
-                    color: '#333333'
-                }]
-            }
-        ]
+        styles: mapStyles
     });
 
-    fetchTabletopData(currentYear).then(() => placeMarkers(downloadedYears[currentYear]));
+    Promise.all([
+        fetchDataDocuments(),
+        fetchInstitutionData()
+    ]).then(() => displayMap(currentYear));
 }
 
-function fetchTabletopData(year) {
-    var fetchFunction = function fetchData(resolve, reject) {
-        if (downloadedYears[year] !== undefined) {
-            clearMarkers();
-            resolve();
-            return;
+function fetchDataDocuments() {
+    return fetchTabletopData(dataDocumentsSheet, function(tabletop) {
+        // Clear defaultSelectOption
+        yearSelect.innerHTML = '';
+        for (let dataDocument of tabletop.sheets('main').all()) {
+            dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
+
+            let option = document.createElement('option');
+            option.textContent = dataDocument['Year'];
+            if (dataDocument['Year'] == currentYear) {
+                option.selected = true;
+            }
+
+            yearSelect.prepend(option);
+        }
+    });
+}
+
+function fetchInstitutionData() {
+    return fetchTabletopData(institutionDataSheet, function(tabletop) {
+        // Turn 2D list into easily-subscriptable object
+        for (let institution of tabletop.sheets('coordinates').all()) {
+            coordinates[institution['Name']] = {
+                lat: parseFloat(institution['lat']),
+                lng: parseFloat(institution['lng']),
+            };
         }
 
-        console.log('Running Tabletop query...');
-        // TODO: Do this asynchronously
+        for (let logo of tabletop.sheets('logos').all()) {
+            logos.set(logo['Name'], logo['Logo']);
+        }
+    });
+}
+
+function fetchStudentData(year) {
+    if (downloadedYears[year] !== undefined) {
+        clearMarkers();
+        return Promise.resolve();
+    }
+
+    return fetchTabletopData(dataDocuments.get(year), function(tabletop) {
+        clearMarkers();
+        var savedData = buildMarkers(tabletop)
+        // Save the data in an object for caching purposes
+        downloadedYears[year] = savedData;
+    });
+}
+
+function fetchTabletopData(sheetID, callback) {
+    var fetchFunction = function fetchData(resolve, reject) {
         Tabletop.init({
-            key: dataDocuments[year],
-            error: function() {
-                reject();
-            },
+            key: sheetID,
+            error: reject,
             callback: function(data, tabletop) {
-                clearMarkers();
-                var institutions = buildMarkers(tabletop)
-                // Save the data in an object for caching purposes
-                downloadedYears[year] = institutions;
+                callback(tabletop);
                 resolve();
             },
-            simpleSheet: true,
+            simpleSheet: true
         });
     }
 
     return new Promise(fetchFunction);
 }
 
-function refreshMap(year) {
-    mapElement.classList.add('refreshing');
+function displayMap(year) {
+    mapElement.classList.add('loading');
     clearPopups();
     Promise.all([
         // Minimum delay of 300ms before, then, placing new markers
         Promise.all([
-            fetchTabletopData(year),
+            fetchStudentData(year),
             sleep(300)
         ]).then(() => placeMarkers(downloadedYears[year])),
-        transitionEnd(mapElement, 'filter')
+        // Either the transition ends or its time is up
+        Promise.race([
+            transitionEnd(mapElement, 'filter'),
+            sleep(750)
+        ])
     ]).then(function() {
-        mapElement.classList.remove('refreshing');
+        mapElement.classList.remove('loading');
     });
 }
 
@@ -169,14 +145,6 @@ function clearPopups() {
 
 function buildMarkers(tabletop) {
     var institutions = {};
-    var coordinates = {};
-    // Turn 2D list into easily-subscriptable object
-    for (institution of tabletop.sheets('coordinates').toArray()) {
-        coordinates[institution[0]] = {
-            lat: parseFloat(institution[1]),
-            lng: parseFloat(institution[2]),
-        };
-    }
     // TODO: Stop getting sheet data in array
     // I messed up the ordering of the data in the years 2019 and 2020
     // Now we have to use the names of each field to extract info rather than position...
@@ -198,9 +166,9 @@ function buildMarkers(tabletop) {
         });
     }
 
-    for (institution of tabletop.sheets('logos').all()) {
-        if (institutions[institution.name]) {
-            institutions[institution.name].logo = institution.logo;
+    for (institution of logos.keys()) {
+        if (institutions[institution]) {
+            institutions[institution].logo = logos.get(institution);
         }
     }
 
@@ -309,7 +277,7 @@ onkeydown = function(e) {
 yearSelect.addEventListener('change', function (event) {
     if (currentYear != event.target.value) {
         currentYear = event.target.value;
-        refreshMap(currentYear);
+        displayMap(currentYear);
     }
 });
 
@@ -365,12 +333,95 @@ function debugInstitutionLogos() {
     }
 }
 
-function debugPortraits(baseurl) {
+function debugPortraits() {
     for (name in downloadedYears[currentYear]) {
         for (student of downloadedYears[currentYear][name].students) {
-            fetch(baseurl + '/portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
+            fetch('portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
                 .catch(() => console.err('Portrait not found for Student: ' + student.name));
         }
     }
 }
 
+var mapStyles = [
+    {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#222222'
+        }]
+    },
+    {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#444444'
+        }]
+    },
+    {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [
+            {
+                color: '#444444'
+            },
+            {
+                lightness: -37
+            }
+        ]
+    },
+    {
+        featureType: 'poi',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#666666'
+        }]
+    },
+    {
+        elementType: 'labels.text.stroke',
+        stylers: [
+            {
+                visibility: 'on'
+            },
+            {
+                color: '#666666'
+            },
+            {
+                weight: 2
+            },
+            {
+                gamma: 0.84
+            }
+        ]
+    },
+    {
+        elementType: 'labels.text.fill',
+        stylers: [{
+            color: '#ffffff'
+        }]
+    },
+    {
+        featureType: 'administrative',
+        elementType: 'geometry',
+        stylers: [
+            {
+                weight: 0.6
+            },
+            {
+                color: '#d12727'
+            }
+        ]
+    },
+    {
+        elementType: 'labels.icon',
+        stylers: [{
+            visibility: 'off'
+        }]
+    },
+    {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#333333'
+        }]
+    }
+];

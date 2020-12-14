@@ -51,7 +51,7 @@ div a[rel="noopener"] img {
 #map-options input[type="checkbox"] {
     vertical-align: baseline;
 }
-.refreshing {
+.loading {
     filter: blur(1.5rem);
 }
 #map-options #dropdown-toggle, #map-options #dropdown-toggle-arrow {
