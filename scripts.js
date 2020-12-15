@@ -323,7 +323,7 @@ function debugInstitutionLogos() {
     for (let year of dataDocuments.keys()) {
         for (let student of students.get(year)) {
             if (!logos.has(student['Institution Name'])) {
-                console.warn('No logo found for Institution: ' + name);
+                console.warn('No logo found for Institution: ' + student['Institution Name']);
             }
         }
     }
