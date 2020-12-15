@@ -24,11 +24,14 @@ var popupOpen = false;
 
 var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
 var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
-var dataDocuments = new Map();
+var dataDocuments = new Map([
+    ['2019', '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE'],
+    ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4']
+]);
 
-var logos = new Map();
-var coordinates = {};
-var downloadedYears = {};
+var logos = new Map();  // Institution Name => Logo URL
+var coordinates = new Map();  // Institution Name => { lat, lng }
+var students = new Map();  // Year => List of students
 
 // Called by Maps API upon loading.
 function initMap() {
@@ -52,66 +55,63 @@ function initMap() {
 
     Promise.all([
         fetchDataDocuments(),
-        fetchInstitutionData()
-    ]).then(() => displayMap(currentYear));
+        fetchInstitutionData(),
+        // Student data is fetched again in displayMap, so if the sheet ID
+        // wasn't already in the students Map, the one from the dataDocument is used
+        fetchStudentData(currentYear)
+    ]).then(() => displayMap(currentYear, true));
 }
 
-function fetchDataDocuments() {
-    return fetchTabletopData(dataDocumentsSheet, function(tabletop) {
-        // Clear defaultSelectOption
-        yearSelect.innerHTML = '';
-        for (let dataDocument of tabletop.sheets('main').all()) {
-            dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
+async function fetchDataDocuments() {
+    const tabletop = await fetchTabletopData(dataDocumentsSheet);
+    // Clear defaultSelectOption
+    yearSelect.innerHTML = '';
+    for (let dataDocument of tabletop.sheets('main').all()) {
+        dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
 
-            let option = document.createElement('option');
-            option.textContent = dataDocument['Year'];
-            if (dataDocument['Year'] == currentYear) {
-                option.selected = true;
-            }
-
-            yearSelect.prepend(option);
+        let option = document.createElement('option');
+        option.textContent = dataDocument['Year'];
+        if (dataDocument['Year'] == currentYear) {
+            option.selected = true;
         }
-    });
+
+        yearSelect.prepend(option);
+    }
 }
 
-function fetchInstitutionData() {
-    return fetchTabletopData(institutionDataSheet, function(tabletop) {
-        // Turn 2D list into easily-subscriptable object
-        for (let institution of tabletop.sheets('coordinates').all()) {
-            coordinates[institution['Name']] = {
-                lat: parseFloat(institution['lat']),
-                lng: parseFloat(institution['lng']),
-            };
-        }
+async function fetchInstitutionData() {
+    const tabletop = await fetchTabletopData(institutionDataSheet);
+    // Turn 2D list into easily-subscriptable object
+    for (let institution of tabletop.sheets('coordinates').all()) {
+        coordinates.set(institution['Name'], {
+            lat: parseFloat(institution['lat']),
+            lng: parseFloat(institution['lng']),
+        });
+    }
 
-        for (let logo of tabletop.sheets('logos').all()) {
-            logos.set(logo['Name'], logo['Logo']);
-        }
-    });
+    for (let logo of tabletop.sheets('logos').all()) {
+        logos.set(logo['Name'], logo['Logo']);
+    }
 }
 
-function fetchStudentData(year) {
-    if (downloadedYears[year] !== undefined) {
+async function fetchStudentData(year) {
+    if (students.has(year) || !dataDocuments.has(year)) {
         clearMarkers();
         return Promise.resolve();
     }
 
-    return fetchTabletopData(dataDocuments.get(year), function(tabletop) {
-        clearMarkers();
-        var savedData = buildMarkers(tabletop)
-        // Save the data in an object for caching purposes
-        downloadedYears[year] = savedData;
-    });
+    const tabletop = await fetchTabletopData(dataDocuments.get(year));
+    clearMarkers();
+    students.set(year, tabletop.sheets('raw').all());
 }
 
-function fetchTabletopData(sheetID, callback) {
+function fetchTabletopData(sheetID) {
     var fetchFunction = function fetchData(resolve, reject) {
         Tabletop.init({
             key: sheetID,
             error: reject,
-            callback: function(data, tabletop) {
-                callback(tabletop);
-                resolve();
+            callback: function(_, tabletop) {
+                resolve(tabletop);
             },
             simpleSheet: true
         });
@@ -120,19 +120,21 @@ function fetchTabletopData(sheetID, callback) {
     return new Promise(fetchFunction);
 }
 
-function displayMap(year) {
+function displayMap(year, firstLoad) {
     mapElement.classList.add('loading');
     clearPopups();
     Promise.all([
-        // Minimum delay of 300ms before, then, placing new markers
+        // Minimum delay of 300ms if not the first load
         Promise.all([
             fetchStudentData(year),
-            sleep(300)
-        ]).then(() => placeMarkers(downloadedYears[year])),
+            sleep(firstLoad ? 0 : 300)
+        ])
+            .then(() => buildInstitutionData(year))
+            .then((institutions) => placeMarkers(institutions)),
         // Either the transition ends or its time is up
         Promise.race([
             transitionEnd(mapElement, 'filter'),
-            sleep(750)
+            sleep(firstLoad ? 0 : 750)  // 0 if the first load since initial fetch took time
         ])
     ]).then(function() {
         mapElement.classList.remove('loading');
@@ -143,21 +145,19 @@ function clearPopups() {
     if (popup) popup.setMap(null);
 }
 
-function buildMarkers(tabletop) {
+function buildInstitutionData(year) {
     var institutions = {};
     // TODO: Stop getting sheet data in array
-    // I messed up the ordering of the data in the years 2019 and 2020
-    // Now we have to use the names of each field to extract info rather than position...
-    for (student of tabletop.sheets('raw').all()) {
-        if (!institutions[student['Institution name']]) { // If the institution isn't already in the list
-            if (!coordinates[student['Institution name']]) {
+    for (student of students.get(year)) {
+        if (!institutions[student['Institution name']]) { // If the institution isn't already in the object
+            if (!coordinates.has(student['Institution name'])) {
                 console.error('No location data found for Institution: ' + student['Institution name']);
             }
 
             institutions[student['Institution name'].trim()] = {
                 name: student['Institution name'].trim(),
                 students: [],
-                position: coordinates[student['Institution name'].trim()],
+                position: coordinates.get(student['Institution name'].trim()),
             }
         }
         institutions[student['Institution name'].trim()].students.push({
@@ -166,19 +166,17 @@ function buildMarkers(tabletop) {
         });
     }
 
-    for (institution of logos.keys()) {
-        if (institutions[institution]) {
-            institutions[institution].logo = logos.get(institution);
+    for ([ institutionName, logoURL ] of logos) {
+        if (institutions[institutionName]) {
+            institutions[institutionName].logo = logoURL;
         }
     }
 
-    console.log(institutions);
     return institutions;
 }
 
 function placeMarkers(institutions) {
     for (name in institutions) {
-        //console.log('Creating marker for ' + name + ' with ' + institutions[name].students.length + ' student(s).');
         let marker = new google.maps.Marker(institutions[name]);
         google.maps.event.addListener(marker, 'click', function() {
             details(this);
@@ -305,10 +303,6 @@ function setMarkerPrecedence(bottom) {
     }
 }
 
-function clamp(value, max, min) {
-    return Math.min(max, Math.max(value, min));
-}
-
 function transitionEnd(element, transitionProperty) {
     return new Promise(function(resolve, _) {
         var callback = function(event) {
@@ -326,19 +320,19 @@ function sleep(millis) {
 }
 
 function debugInstitutionLogos() {
-    for (name in downloadedYears[currentYear]) {
-        if (!downloadedYears[currentYear][name].logo) {
-            console.warn('No logo found for Institution: ' + name);
+    for (let year of dataDocuments.keys()) {
+        for (let student of students.get(year)) {
+            if (!logos.has(student['Institution Name'])) {
+                console.warn('No logo found for Institution: ' + name);
+            }
         }
     }
 }
 
 function debugPortraits() {
-    for (name in downloadedYears[currentYear]) {
-        for (student of downloadedYears[currentYear][name].students) {
-            fetch('portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
+    for (student of students.get(currentYear)) {
+        fetch('portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
                 .catch(() => console.err('Portrait not found for Student: ' + student.name));
-        }
     }
 }
 
