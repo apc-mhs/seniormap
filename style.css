@@ -95,7 +95,7 @@ div a[rel="noopener"] img {
 #map-options-dropdown > div.map-option:not(:last-child) {
     margin-bottom: 5px;
 }
-div.map-option > :not(label) {
+.options-select, div.map-option > :not(label) {
     margin-left: 5px;
 }
 #map-options #dropdown-toggle:checked ~ #map-options-dropdown {
