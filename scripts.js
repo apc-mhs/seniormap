@@ -5,10 +5,9 @@ var panCheckbox = document.getElementById('pan-option');
 var precedenceSelect = document.getElementById('cover-select');
 
 var today = new Date();
-// The yearActivationMonth determines the month that a specific year is added to
-// the yearSelect dropdown. The value "4" means that a year will become available
-// in May
-var yearActivationMonth = 4;
+// The yearActivationMonth determines the month that a specific year becomes
+// the default in the selectYear dropdown. Currently, 3 (April) is used
+var yearActivationMonth = 3;
 var currentYear = new Date(
     today.getFullYear(),
     today.getMonth() - yearActivationMonth,
@@ -26,7 +25,8 @@ var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
 var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
 var dataDocuments = new Map([
     ['2019', '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE'],
-    ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4']
+    ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'],
+    ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k']
 ]);
 
 var logos = new Map();  // Institution Name => Logo URL
