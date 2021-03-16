@@ -3,6 +3,9 @@ var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
 var panCheckbox = document.getElementById('pan-option');
 var precedenceSelect = document.getElementById('cover-select');
+var modal = document.getElementById('modal');
+var viewMapButton = document.getElementById('view-map-button');
+var display2019Map = false;
 
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
@@ -24,7 +27,7 @@ var popupOpen = false;
 var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
 var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
 var dataDocuments = new Map([
-    ['2019', '1oHzFViH9gI3rwXNeHqYLOiIIYo57m0n6EMPll5kZJRE'],
+    ['2019', '1HqVRuUPRGFlsPyEVn4Xz04Eyqmmt1FyfI7lUb2tHwBE'],
     ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'],
     ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k']
 ]);
@@ -123,6 +126,14 @@ function fetchTabletopData(sheetID) {
 function displayMap(year, firstLoad) {
     mapElement.classList.add('loading');
     clearPopups();
+
+    if (!display2019Map && year == 2019) {
+        modal.classList.add('shown');
+        return;
+    } else {
+        modal.classList.remove('shown');
+    }
+
     Promise.all([
         // Minimum delay of 300ms if not the first load
         Promise.all([
@@ -302,6 +313,11 @@ function setMarkerPrecedence(bottom) {
         markers[i].setZIndex(i);
     }
 }
+
+viewMapButton.addEventListener('click', function() {
+    display2019Map = true;
+    displayMap('2019', false);
+});
 
 function transitionEnd(element, transitionProperty) {
     return new Promise(function(resolve, _) {
