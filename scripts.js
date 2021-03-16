@@ -9,12 +9,12 @@ var display2019Map = false;
 
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
-// the default in the selectYear dropdown. Currently, 3 (April) is used
-var yearActivationMonth = 3;
+// the default in the selectYear dropdown. Currently, 2 (March 15th) is used
+var yearActivationMonth = 2;
 var currentYear = new Date(
     today.getFullYear(),
     today.getMonth() - yearActivationMonth,
-    today.getDate()
+    today.getDate() - 15
 ).getFullYear().toString();
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
