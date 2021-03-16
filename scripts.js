@@ -14,7 +14,7 @@ var yearActivationMonth = 2;
 var currentYear = new Date(
     today.getFullYear(),
     today.getMonth() - yearActivationMonth,
-    today.getDate() - 15
+    today.getDate() - 14
 ).getFullYear().toString();
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
