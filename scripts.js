@@ -417,9 +417,23 @@ var mapStyles = [
                 weight: 0.6
             },
             {
-                color: '#d12727'
+                color: '#444444'
             }
         ]
+    },
+    {
+        featureType: 'administrative.country',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#d12727'
+        }]
+    },
+    {
+        featureType: 'administrative.province',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#d12727'
+        }]
     },
     {
         elementType: 'labels.icon',
@@ -432,6 +446,13 @@ var mapStyles = [
         elementType: 'geometry',
         stylers: [{
             color: '#333333'
+        }]
+    },
+    {
+        featureType: 'poi.school',
+        elementType: 'geometry',
+        stylers: [{
+            color: '#d12727'
         }]
     }
 ];
