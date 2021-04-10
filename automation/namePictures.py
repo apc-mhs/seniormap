@@ -18,7 +18,6 @@ def main():
     for count, filename in enumerate(files): 
         dst = names[count][0] + " " + names[count][1] + ".jpg"
         src = filename 
-        dst = dst 
         os.rename(src, dst) 
 
 if __name__ == '__main__': 
