@@ -232,10 +232,9 @@ function details(institution) {
         imageExists(studentPhoto.src, function(exists) {
             if(exists == true)
             {
-                console.log('The picture at ' + studentPhoto.src + ', state of existance is: ' + exists);
+                studentPhoto.src = 'portraits/' + currentYear + '/' + student.name + '.jpg';
             }
             else {
-                console.log('The picture at ' + studentPhoto.src + ', state of existance is: ' + exists);
                 studentPhoto.src = 'portraits/blankHead.png';
             }
         });
