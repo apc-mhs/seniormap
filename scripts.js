@@ -229,6 +229,15 @@ function details(institution) {
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
         studentPhoto.src = 'portraits/' + currentYear + '/' + student.name + '.jpg';
+        imageExists(studentPhoto.src, function(exists) {
+            if(exists == true)
+            {
+                studentPhoto.src = 'portraits/' + currentYear + '/' + student.name + '.jpg';
+            }
+            else {
+                studentPhoto.src = 'portraits/blankHead.png';
+            }
+        });
         studentPhoto.alt = student.name + ' portrait';
         studentPhoto.draggable = false;
         studentName.textContent = student.name;
@@ -249,6 +258,13 @@ function details(institution) {
     console.log('Adding popup');
     popupOpen = true;
 }
+
+function imageExists(url, callback) {
+    var img = new Image();
+    img.onload = function() { callback(true); };
+    img.onerror = function() { callback(false); };
+    img.src = url;
+  }
 
 var dragged = false;
 onmousedown = function() {
