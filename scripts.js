@@ -230,7 +230,7 @@ function details(institution) {
             studentMajor = document.createElement('p');
         studentPhoto.src = 'portraits/' + currentYear + '/' + student.name + '.jpg';
         imageExists(studentPhoto.src, function(exists) {
-            if(!exists) {
+            if (!exists) {
                 studentPhoto.src = 'portraits/blankHead.png';
             }
         });
