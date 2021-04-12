@@ -15,22 +15,21 @@
 
     <body>
         <div id="map" class="loading"></div>
-        <div id="map-options">
+        <div id="options">
             <label for="year-select">Year: </label>
-            <select id="year-select" class="options-select">
+            <select id="year-select">
                 <!-- Options populated by JS -->
             </select>
-            <input type="checkbox" id="dropdown-toggle">
-            <img id="dropdown-toggle-arrow" src="img/gear.svg">
-            <div id="map-options-dropdown">
-                <p>Map Options</p>
-                <div class="map-option">
-                    <label for="pan-option">Pan To Markers: </label>
-                    <input id="pan-option" type="checkbox" class="options-select" checked>
+            <input type="checkbox" id="options-toggle">
+            <img id="options-toggle-image" src="img/gear.svg">
+            <div id="options-dropdown">
+                <div class="option">
+                    <label for="option-pan">Pan To Markers: </label>
+                    <input id="option-pan" type="checkbox" checked>
                 </div>
-                <div class="map-option">
-                    <label for="cover-select">Marker Precedence: </label>
-                    <select id="cover-select" class="options-select">
+                <div class="option">
+                    <label for="option-precedence">Marker Precedence: </label>
+                    <select id="option-precedence">
                         <option>Top</option>
                         <option selected>Bottom</option>
                     </select>

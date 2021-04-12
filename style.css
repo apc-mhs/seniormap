@@ -61,43 +61,52 @@ div a[rel="noopener"] img {
 #logo {
     width: 100%;
 }
-#map-options {
+#options {
     position: absolute;
     top: 0;
     left: 0;
     padding: 10px;
     color: white;
-    width: 244px;
+    width: 200px;
     height: auto;
     background: #222;
 }
-#map-options input[type="checkbox"] {
+#options label {
+    margin-right: 5px;
+}
+#options select {
+    border: solid 1px #555;
+    padding: 3px;
+    border-radius: 5px;
+}
+#options input[type="checkbox"] {
     vertical-align: baseline;
 }
 .loading {
     filter: blur(1.5rem);
 }
-#map-options #dropdown-toggle, #map-options #dropdown-toggle-arrow {
+#options #options-toggle, #options #options-toggle-image {
     position: absolute;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
 }
-#map-options #dropdown-toggle {
+#options #options-toggle {
     opacity: 0;
 }
-#map-options #dropdown-toggle:checked + #dropdown-toggle-arrow {
+#options #options-toggle:checked + #options-toggle-image {
     transform: rotate(180deg);
 }
-#map-options #dropdown-toggle-arrow {
+#options #options-toggle-image {
     pointer-events: none;
     transition: transform 250ms ease;
 }
-#map-options-dropdown {
+#options-dropdown {
     position: absolute;
     background-color: #222;
-    padding: 10px;
+    padding: 0 10px 10px;
     width: 100%;
     top: 100%;
     left: 0;
@@ -107,24 +116,16 @@ div a[rel="noopener"] img {
     transform-origin: center top 0;
     pointer-events: none;
 }
-#map-options-dropdown > p {
-    text-align: center;
-    margin-bottom: 7px;
+#options-dropdown .option {
+    margin-bottom: 10px;
 }
-#map-options-dropdown > div.map-option {
-    width: max-content;
-    height: auto;
-}
-#map-options-dropdown > div.map-option:not(:last-child) {
-    margin-bottom: 5px;
-}
-.options-select, div.map-option > :not(label) {
-    margin-left: 5px;
-}
-#map-options #dropdown-toggle:checked ~ #map-options-dropdown {
+#options #options-toggle:checked ~ #options-dropdown {
     pointer-events: all;
     opacity: 1;
     transform: scaleY(1);
+}
+#options #options-dropdown select {
+    margin-top: 5px;
 }
 #modal {
     position: absolute;
