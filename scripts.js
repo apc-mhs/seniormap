@@ -1,8 +1,10 @@
 var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
-var yearSelect = document.getElementById('year-select');
-var panCheckbox = document.getElementById('option-pan');
-var precedenceSelect = document.getElementById('option-precedence');
+var options = {
+    year: document.getElementById('option-year'),
+    pan: document.getElementById('option-pan'),
+    precedence: document.getElementById('option-precedence'),
+};
 
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
@@ -16,7 +18,7 @@ var currentYear = new Date(
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
 defaultSelectOption.textContent = currentYear;
-yearSelect.appendChild(defaultSelectOption);
+options.year.appendChild(defaultSelectOption);
 
 var panToMarkers = true;
 var popupOpen = false;
@@ -65,7 +67,7 @@ function initMap() {
 async function fetchDataDocuments() {
     const tabletop = await fetchTabletopData(dataDocumentsSheet);
     // Clear defaultSelectOption
-    yearSelect.innerHTML = '';
+    options.year.innerHTML = '';
     for (let dataDocument of tabletop.sheets('main').all()) {
         dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
 
@@ -75,7 +77,7 @@ async function fetchDataDocuments() {
             option.selected = true;
         }
 
-        yearSelect.prepend(option);
+        options.year.prepend(option);
     }
 }
 
@@ -199,7 +201,7 @@ function placeMarkers(institutions) {
         marker.setMap(map);
         markers.push(marker);
     }
-    setMarkerPrecedence(precedenceSelect.value == 'Bottom');
+    setMarkerPrecedence(options.precedence.value == 'Bottom');
 }
 
 function clearMarkers() {
@@ -285,18 +287,18 @@ onkeydown = function(e) {
     }
 }
 
-yearSelect.addEventListener('change', function (event) {
+options.year.addEventListener('change', function (event) {
     if (currentYear != event.target.value) {
         currentYear = event.target.value;
         displayMap(currentYear);
     }
 });
 
-panCheckbox.addEventListener('click', function (event) {
+options.pan.addEventListener('click', function (event) {
     panToMarkers = event.target.checked;
 });
 
-precedenceSelect.addEventListener('change', (event) => {
+options.precedence.addEventListener('change', (event) => {
     setMarkerPrecedence(event.target.value == 'Bottom');
 });
 
