@@ -1,8 +1,8 @@
 var map, popup, Popup, markers = [];
 var mapElement = document.getElementById('map');
 var yearSelect = document.getElementById('year-select');
-var panCheckbox = document.getElementById('pan-option');
-var precedenceSelect = document.getElementById('cover-select');
+var panCheckbox = document.getElementById('option-pan');
+var precedenceSelect = document.getElementById('option-precedence');
 
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
@@ -26,7 +26,7 @@ var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
 var dataDocuments = new Map([
     ['2019', '18JTbEUmTiUCMbazqj593Q6QNfpQZbjSiKUpHrWF9EGc'],
     ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'],
-    ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k']
+    ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k'],
 ]);
 
 var logos = new Map();  // Institution Name => Logo URL
@@ -187,8 +187,8 @@ function placeMarkers(institutions) {
                 var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
                 var defaultOffset = 80 * scale;
                 var offsetPerStudent = 40 * scale;
-                
-                worldCoordinate.y -= defaultOffset + 
+
+                worldCoordinate.y -= defaultOffset +
                     (offsetPerStudent * Math.min(5, this.students.length));
                 worldCoordinate.y = Math.max(0, worldCoordinate.y);
 
