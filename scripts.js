@@ -336,9 +336,11 @@ function sleep(millis) {
 
 function debugInstitutionLogos() {
     for (let year of dataDocuments.keys()) {
+        if (!students.get(year)) continue;
+
         for (let student of students.get(year)) {
-            if (!logos.has(student['Institution Name'])) {
-                console.warn('No logo found for Institution: ' + student['Institution Name']);
+            if (!logos.has(student['Institution name'])) {
+                console.warn('No logo found for Institution: ' + student['Institution name']);
             }
         }
     }
@@ -346,7 +348,7 @@ function debugInstitutionLogos() {
 
 function debugPortraits() {
     for (student of students.get(currentYear)) {
-        fetch('portraits/' + currentYear + '/' + encodeURI(student.name) + '.jpg')
+        fetch('portraits/' + currentYear + '/' + student['First name'] + ' ' + student['Last name']  + '.jpg')
                 .catch(() => console.err('Portrait not found for Student: ' + student.name));
     }
 }
