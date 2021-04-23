@@ -7,8 +7,10 @@
         <meta name="description" content="See where GMHS seniors will be after graduation!">
         <meta name="viewport" content="initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-        <link rel="stylesheet" href="popup.css">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/popup.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/modal.css">
+        <link rel="stylesheet" href="css/statistics.css">
         <link rel="icon" type="image/png" href="favicon.png">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
     </head>
@@ -43,21 +45,22 @@
             <p class="branding-info">Maintained by GMHS <a target="_blank" rel="noopener" href="https://apc-gm.com">A.P.C.</a></p>
         </div>
         <div id="statistics">
-            <img id="statistics-button" src="/img/chevron_left_white_24dp.svg">
+            <img id="statistics-button" src="/img/left_chevron.svg">
             <h3 id="statistics-header">
-                Class of <span id="statistics-header-class" class="data"></span> stats
+                Class of <span id="statistics-header-class" class="stat"></span> stats
             </h3>
             <ul id="statistics-stats">
-                <li><span id="stats-students" class="data"></span> students displayed</li>
-                <li class="processing-required"><span id="stats-destinations" class="data"></span> total destinations</li>
-                <li class="processing-required"><span id="stats-states" class="data"></span> different states</li>
-                <li class="processing-required"><span id="stats-countries" class="data"></span> different countries</li>
+                <li><span id="stats-students" class="stat"></span> students displayed</li>
+                <li class="processing-required"><span id="stats-destinations" class="stat"></span> total destinations</li>
+                <li class="processing-required"><span id="stats-states" class="stat"></span> different states</li>
+                <li class="processing-required"><span id="stats-countries" class="stat"></span> different countries</li>
                 <li class="processing-incomplete"><em>Other stats are still being processed</em></li>
             </ul>
         </div>
     </body>
-    <script src="popup.js"></script>
-    <script src="scripts.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/statistics.js"></script>
+    <script src="js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.2/tabletop.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2DiuOwQf-LdnOSNGW-mhlZt024RO0eL8&callback=initMap" async defer></script>
 </html>
