@@ -9,9 +9,9 @@
     border-radius: 5px 0px 0px 5px;
     color: white;
     transition: transform 250ms ease-in-out;
+    z-index: 4;
 }
 #statistics-button {
-    content: '';
     position: absolute;
     display: block;
     --arrow-width: 40px;
@@ -32,7 +32,7 @@
 }
 #statistics.open #statistics-button {
     transform: scaleX(-1) translateY(-50%);
-    background-color: transparent;
+    background-color: #222;
     --color: white;
 }
 #statistics.no-data .processing-required, #statistics:not(.no-data) .processing-incomplete {
@@ -47,4 +47,25 @@
 }
 #statistics span.stat {
     font-weight: bold;
+}
+@media (max-width: 950px) {
+    #statistics {
+        top: 65px;
+        left: 0px;
+        right: unset;
+        transform: translateX(-100%);
+        border-radius: 0px 5px 5px 0px;
+    }
+    #statistics.open {
+        transform: translateX(0%);
+    }
+    #statistics-button {
+        top: 0px;
+        right: calc(-1 * calc(var(--arrow-width) + 10px));
+        left: unset;
+        transform: scaleX(-1);
+    }
+    #statistics.open #statistics-button {
+        transform: scaleX(1);
+    }
 }
