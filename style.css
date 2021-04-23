@@ -159,6 +159,51 @@ div a[rel="noopener"] img {
     opacity: 1;
     pointer-events: all;
 }
+#statistics {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    width: 250px;
+    transform: translate(100%, -50%);
+    background-color: #222;
+    padding: 15px 20px;
+    border-radius: 5px 0px 0px 5px;
+    color: white;
+    transition: transform 250ms ease-in-out;
+}
+#statistics-button {
+    content: '';
+    position: absolute;
+    display: block;
+    --arrow-width: 50px;
+    top: 50%;
+    left: calc(-1 * var(--arrow-width));
+    width: var(--arrow-width);
+    height: var(--arrow-width);
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: transform 250ms ease-in-out;
+    transform-origin: center;
+}
+#statistics.open {
+    transform: translate(0%, -50%);
+}
+#statistics.open #statistics-button {
+    transform: scaleX(-1) translateY(-50%);
+}
+#statistics.no-data .processing-required, #statistics:not(.no-data) .processing-incomplete {
+    display: none;
+}
+#statistics-header {
+    margin-bottom: 15px;
+}
+#statistics-stats {
+    list-style: none;
+    line-height: 2;
+}
+#statistics span.data {
+    font-weight: bold;
+}
 @media (max-width: 950px) {
     .branding-info {
         display: none;
