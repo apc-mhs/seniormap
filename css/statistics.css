@@ -14,14 +14,17 @@
     content: '';
     position: absolute;
     display: block;
-    --arrow-width: 50px;
+    --arrow-width: 40px;
     top: 50%;
-    left: calc(-1 * var(--arrow-width));
+    left: calc(-1 * calc(var(--arrow-width) + 10px));
     width: var(--arrow-width);
     height: var(--arrow-width);
     transform: translateY(-50%);
     cursor: pointer;
-    transition: transform 250ms ease-in-out;
+    background-color: white;
+    --color: #666666;
+    border-radius: 2px;
+    transition: transform 250ms ease-in-out, background-color 250ms ease-in-out;
     transform-origin: center;
 }
 #statistics.open {
@@ -29,6 +32,8 @@
 }
 #statistics.open #statistics-button {
     transform: scaleX(-1) translateY(-50%);
+    background-color: transparent;
+    --color: white;
 }
 #statistics.no-data .processing-required, #statistics:not(.no-data) .processing-incomplete {
     display: none;
