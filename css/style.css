@@ -70,6 +70,7 @@ div a[rel="noopener"] img {
     width: 200px;
     height: auto;
     background: #222;
+    z-index: 5;
 }
 #options label {
     margin-right: 5px;
