@@ -1,21 +1,10 @@
 var map, popup, Popup, markers = [];
-var mapElement = document.getElementById('map');
-var options = {
-    year: document.getElementById('option-year'),
-    pan: document.getElementById('option-pan'),
-    precedence: document.getElementById('option-precedence'),
-};
-
-var statistics = {
-    statistics: document.getElementById('statistics'),
-    button: document.getElementById('statistics-button'),
-    header: document.getElementById('statistics-header'),
-    class: document.getElementById('statistics-header-class'),
-    stats: {
-        students: document.getElementById('stats-students'),
-        destinations: document.getElementById('stats-destinations'),
-        states: document.getElementById('stats-states'),
-        countries: document.getElementById('stats-countries')
+const elements = {
+    map: document.getElementById('map'),
+    options: {
+        year: document.getElementById('option-year'),
+        pan: document.getElementById('option-pan'),
+        precedence: document.getElementById('option-precedence'),
     }
 }
 
@@ -31,7 +20,7 @@ var currentYear = new Date(
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
 defaultSelectOption.textContent = currentYear;
-options.year.appendChild(defaultSelectOption);
+elements.options.year.appendChild(defaultSelectOption);
 
 var panToMarkers = true;
 var popupOpen = false;
@@ -53,7 +42,7 @@ var students = new Map();  // Year => List of students
 function initMap() {
     definePopupClass();
 
-    map = new google.maps.Map(mapElement, { // Define Map Settings
+    map = new google.maps.Map(elements.map, { // Define Map Settings
         center: {
             lat: 35,
             lng: -98
@@ -81,7 +70,7 @@ function initMap() {
 async function fetchDataDocuments() {
     const tabletop = await fetchTabletopData(dataDocumentsSheet);
     // Clear defaultSelectOption
-    options.year.innerHTML = '';
+    elements.options.year.innerHTML = '';
     for (let dataDocument of tabletop.sheets('main').all()) {
         dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
 
@@ -91,12 +80,12 @@ async function fetchDataDocuments() {
             option.selected = true;
         }
 
-        options.year.prepend(option);
+        elements.options.year.prepend(option);
     }
 
-    for (let statsObj of tabletop.sheets('stats').all()) {
-        stats.set(statsObj['Year'], statsObj);
-        delete statsObj['Year'];
+    for (let yearStats of tabletop.sheets('stats').all()) {
+        stats.set(yearStats['Year'], yearStats);
+        delete yearStats['Year'];
     }
 }
 
@@ -142,9 +131,9 @@ function fetchTabletopData(sheetID) {
 }
 
 function displayMap(year, firstLoad) {
-    mapElement.classList.add('loading');
+    elements.map.classList.add('loading');
     clearPopups();
-    statistics.statistics.classList.remove('open');
+    hideStatisticsPanel();
 
     Promise.all([
         // Minimum delay of 300ms if not the first load
@@ -154,14 +143,14 @@ function displayMap(year, firstLoad) {
         ])
             .then(() => buildInstitutionData(year))
             .then((institutions) => placeMarkers(institutions))
-            .then(() => loadStatistics(year)),
+            .then(() => loadStatistics(year, stats)),
         // Either the transition ends or its time is up
         Promise.race([
-            transitionEnd(mapElement, 'filter'),
+            transitionEnd(elements.map, 'filter'),
             sleep(firstLoad ? 0 : 750)  // 0 if the first load since initial fetch took time
         ])
     ]).then(function() {
-        mapElement.classList.remove('loading');
+        elements.map.classList.remove('loading');
     });
 }
 
@@ -222,7 +211,7 @@ function placeMarkers(institutions) {
         marker.setMap(map);
         markers.push(marker);
     }
-    setMarkerPrecedence(options.precedence.value == 'Bottom');
+    setMarkerPrecedence(elements.options.precedence.value == 'Bottom');
 }
 
 function clearMarkers() {
@@ -308,38 +297,20 @@ onkeydown = function(e) {
     }
 }
 
-options.year.addEventListener('change', function (event) {
+elements.options.year.addEventListener('change', function(event) {
     if (currentYear != event.target.value) {
         currentYear = event.target.value;
         displayMap(currentYear);
     }
 });
 
-options.pan.addEventListener('click', function (event) {
+elements.options.pan.addEventListener('click', function(event) {
     panToMarkers = event.target.checked;
 });
 
-options.precedence.addEventListener('change', function (event) {
+elements.options.precedence.addEventListener('change', function(event) {
     setMarkerPrecedence(event.target.value == 'Bottom');
 });
-
-statistics.button.addEventListener('click', function() {
-    statistics.statistics.classList.toggle('open');
-});
-
-function loadStatistics(year) {
-    statistics.statistics.classList.remove('no-data');
-    statistics.class.textContent = year;
-    statistics.stats.students.textContent = students.get(year).length;
-
-    if (!stats.get(year)['Number of destinations']) {
-        statistics.statistics.classList.add('no-data');
-    }
-
-    statistics.stats.destinations.textContent = stats.get(year)['Number of destinations'];
-    statistics.stats.states.textContent = stats.get(year)['Number of states'];
-    statistics.stats.countries.textContent = stats.get(year)['Number of countries'];
-}
 
 function setMarkerPrecedence(bottom) {
     let bottomMultiplier = bottom ? -1 : 1;
