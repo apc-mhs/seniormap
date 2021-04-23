@@ -6,6 +6,19 @@ var options = {
     precedence: document.getElementById('option-precedence'),
 };
 
+var statistics = {
+    statistics: document.getElementById('statistics'),
+    button: document.getElementById('statistics-button'),
+    header: document.getElementById('statistics-header'),
+    class: document.getElementById('statistics-header-class'),
+    stats: {
+        students: document.getElementById('stats-students'),
+        destinations: document.getElementById('stats-destinations'),
+        states: document.getElementById('stats-states'),
+        countries: document.getElementById('stats-countries')
+    }
+}
+
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
 // the default in the selectYear dropdown. Currently, 2 (March 15th) is used
@@ -30,6 +43,7 @@ var dataDocuments = new Map([
     ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'],
     ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k'],
 ]);
+var stats = new Map();
 
 var logos = new Map();  // Institution Name => Logo URL
 var coordinates = new Map();  // Institution Name => { lat, lng }
@@ -79,6 +93,11 @@ async function fetchDataDocuments() {
 
         options.year.prepend(option);
     }
+
+    for (let statsObj of tabletop.sheets('stats').all()) {
+        stats.set(statsObj['Year'], statsObj);
+        delete statsObj['Year'];
+    }
 }
 
 async function fetchInstitutionData() {
@@ -125,6 +144,7 @@ function fetchTabletopData(sheetID) {
 function displayMap(year, firstLoad) {
     mapElement.classList.add('loading');
     clearPopups();
+    statistics.statistics.classList.remove('open');
 
     Promise.all([
         // Minimum delay of 300ms if not the first load
@@ -133,7 +153,8 @@ function displayMap(year, firstLoad) {
             sleep(firstLoad ? 0 : 300)
         ])
             .then(() => buildInstitutionData(year))
-            .then((institutions) => placeMarkers(institutions)),
+            .then((institutions) => placeMarkers(institutions))
+            .then(() => loadStatistics(year)),
         // Either the transition ends or its time is up
         Promise.race([
             transitionEnd(mapElement, 'filter'),
@@ -298,9 +319,27 @@ options.pan.addEventListener('click', function (event) {
     panToMarkers = event.target.checked;
 });
 
-options.precedence.addEventListener('change', (event) => {
+options.precedence.addEventListener('change', function (event) {
     setMarkerPrecedence(event.target.value == 'Bottom');
 });
+
+statistics.button.addEventListener('click', function() {
+    statistics.statistics.classList.toggle('open');
+});
+
+function loadStatistics(year) {
+    statistics.statistics.classList.remove('no-data');
+    statistics.class.textContent = year;
+    statistics.stats.students.textContent = students.get(year).length;
+
+    if (!stats.get(year)['Number of destinations']) {
+        statistics.statistics.classList.add('no-data');
+    }
+
+    statistics.stats.destinations.textContent = stats.get(year)['Number of destinations'];
+    statistics.stats.states.textContent = stats.get(year)['Number of states'];
+    statistics.stats.countries.textContent = stats.get(year)['Number of countries'];
+}
 
 function setMarkerPrecedence(bottom) {
     let bottomMultiplier = bottom ? -1 : 1;
