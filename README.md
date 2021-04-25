@@ -4,12 +4,11 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 ## Maintainence instructions 
 ### Creating a the form and spreadsheet for a new year
 
-1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access 
-2. Make a copy of a previous year's form and edit content accordingly for the appropriate year
+1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access.  
+2. Make a copy of a previous year's form and edit content accordingly for the appropriate year. 
 3. Ensure the form has a linked Google spreadsheet with the appropriate fields. 
 ![Screenshot of creating linked spreadsheet](resources/readme/tut1.png)
-
-5. Publish the spreadsheet to the web (File > Publish to the web; link will then be provided) 
+4. Publish the spreadsheet to the web (File > Publish to the web; link will then be provided). 
 
 ### Adding the new year to the code base
 
@@ -49,6 +48,8 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
    ![Screenshot of logo cells](resources/readme/tut2.png)
 4. After ensuring the student appears, mark them visible! 
 
+### Passing the map onto future classes 
+1. Lorem ipsum 
 ---
 
 If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers. Also make sure you publicize the map to your class to carry on the tradition! Talk to your class officers about posting the map on Schoology, reach out to your college counselor about sending the map out and consider sharing the map on social media. 
