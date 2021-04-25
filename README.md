@@ -49,7 +49,11 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 4. After ensuring the student appears, mark them visible! 
 
 ### Passing the map onto future classes 
-1. Lorem ipsum 
+1. Find an experienced leadership member of the APC who is a student in the next graduating class who is able and willing to take over the map.
+2. Request their personal email address and transfer ownership of the Senior Map Google Cloud Project to them.
+3. Give their student email account ownership of all Senior Map Google Drive folders and files.
+4. Make sure they can access the Senior Map GitHub repository as editor.
+
 ---
 
 If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers. Also make sure you publicize the map to your class to carry on the tradition! Talk to your class officers about posting the map on Schoology, reach out to your college counselor about sending the map out and consider sharing the map on social media. 
