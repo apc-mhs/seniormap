@@ -275,16 +275,27 @@ function imageExists(url, callback) {
   }
 
 var dragged = false;
-onmousedown = function() {
+
+onmousedown = onDragReset;
+ontouchstart = onDragReset;
+
+onmousemove = onDragStart;
+ontouchmove = onDragStart;
+
+onmouseup = onDragEnd;
+ontouchend = onDragEnd;
+
+function onDragReset() {
     dragged = false;
 }
-onmousemove = function() {
+
+function onDragStart() {
     dragged = true;
 }
 
-onmouseup = function(e) {
+function onDragEnd(e) {
     // Check that we're not clicking a marker and that there was no dragging
-    if (e.target.tagName != 'AREA'
+    if (e.target.tagName != 'IMG'
         && dragged == false) {
         clearPopups();
     }
