@@ -12,7 +12,7 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 
 ### Adding the new year to the code base
 
-1. Within `js/scripts.js`, find the `var dataDocuments` and add an entry, with the spreadsheet's datasheet URL for the appropriate year.
+1. Within `js/scripts.js`, search for "README FLAG" and follow the instructions to add an entry, with the spreadsheet's datasheet URL for the appropriate year.
    - For example: `['2027', 'a8a8a8a8a8a8a8a8a8a8a8a8a8a'],`
 2. Within `index.html` update the linked form link to the latest year.
    - For example: `<p><a href="https://forms.gle/form">Submit your destination here</a></p>`

@@ -31,6 +31,7 @@ var popupOpen = false;
 
 var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
 var yearDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
+// README FLAG: A new year and datasheet URL must be added to this array for the script to access the data on the spreadsheet
 var yearDocuments = new Map([
     ['2019', {
         sheetID: '18JTbEUmTiUCMbazqj593Q6QNfpQZbjSiKUpHrWF9EGc'
