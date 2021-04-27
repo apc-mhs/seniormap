@@ -275,6 +275,7 @@ function imageExists(url, callback) {
   }
 
 var dragged = false;
+var touchStartPositon = null;
 
 onmousedown = onDragReset;
 ontouchstart = onDragReset;
@@ -285,12 +286,20 @@ ontouchmove = onDragStart;
 onmouseup = onDragEnd;
 ontouchend = onDragEnd;
 
-function onDragReset() {
+function onDragReset(e) {
     dragged = false;
+    if (e.touches) {
+        touchStartPositon = [ e.touches[0].screenX, e.touches[0].screenY ];
+    }
 }
 
-function onDragStart() {
-    dragged = true;
+function onDragStart(e) {
+    if (!touchStartPositon || !e.touches || e.touches.length < 1) {
+        dragged = true;
+    } else if (Math.sqrt(Math.pow(touchStartPositon[0] - e.touches[0].screenX, 2)
+        + Math.pow(touchStartPositon[1] - e.touches[0].screenY, 2)) > 25) {
+        dragged = true;
+    }
 }
 
 function onDragEnd(e) {
@@ -300,6 +309,7 @@ function onDragEnd(e) {
         clearPopups();
     }
     dragged = false;
+    touchStartPositon = null;
 }
 
 onkeydown = function(e) {
