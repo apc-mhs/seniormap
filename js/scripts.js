@@ -294,10 +294,9 @@ function onDragReset(e) {
 }
 
 function onDragStart(e) {
-    if (!touchStartPositon || !e.touches || e.touches.length < 1) {
-        dragged = true;
-    } else if (Math.sqrt(Math.pow(touchStartPositon[0] - e.touches[0].screenX, 2)
-        + Math.pow(touchStartPositon[1] - e.touches[0].screenY, 2)) > 25) {
+    if (!touchStartPositon || !e.touches || e.touches.length < 1
+        || Math.sqrt(Math.pow(touchStartPositon[0] - e.touches[0].screenX, 2)
+            + Math.pow(touchStartPositon[1] - e.touches[0].screenY, 2)) > 25) {
         dragged = true;
     }
 }
