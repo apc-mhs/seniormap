@@ -1,6 +1,10 @@
 var map, popup, Popup, markers = [];
 const elements = {
     map: document.getElementById('map'),
+    submitDestination: {
+        submitLink: document.getElementById('submit-destination'),
+        submitYear: document.getElementById('submit-destination-year')
+    },
     options: {
         year: document.getElementById('option-year'),
         pan: document.getElementById('option-pan'),
@@ -26,11 +30,17 @@ var panToMarkers = true;
 var popupOpen = false;
 
 var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
-var dataDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
-var dataDocuments = new Map([
-    ['2019', '18JTbEUmTiUCMbazqj593Q6QNfpQZbjSiKUpHrWF9EGc'],
-    ['2020', '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'],
-    ['2021', '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k'],
+var yearDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
+var yearDocuments = new Map([
+    ['2019', {
+        sheetID: '18JTbEUmTiUCMbazqj593Q6QNfpQZbjSiKUpHrWF9EGc'
+    }],
+    ['2020', {
+        sheetID: '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'
+    }],
+    ['2021', {
+        sheetID: '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k'
+    }],
 ]);
 var stats = new Map();
 
@@ -59,24 +69,27 @@ function initMap() {
     });
 
     Promise.all([
-        fetchDataDocuments(),
+        fetchYearDocuments(),
         fetchInstitutionData(),
         // Student data is fetched again in displayMap, so if the sheet ID
-        // wasn't already in the students Map, the one from the dataDocument is used
+        // wasn't already in the students Map, the one from the yearDocument is used
         fetchStudentData(currentYear)
     ]).then(() => displayMap(currentYear, true));
 }
 
-async function fetchDataDocuments() {
-    const tabletop = await fetchTabletopData(dataDocumentsSheet);
+async function fetchYearDocuments() {
+    const tabletop = await fetchTabletopData(yearDocumentsSheet);
     // Clear defaultSelectOption
     elements.options.year.innerHTML = '';
-    for (let dataDocument of tabletop.sheets('main').all()) {
-        dataDocuments.set(dataDocument['Year'], dataDocument['Datasheet URL']);
+    for (let yearDocument of tabletop.sheets('main').all()) {
+        yearDocuments.set(yearDocument['Year'], {
+            sheetID: yearDocument['Datasheet URL'],
+            formURL: yearDocument['Form URL']
+        });
 
         let option = document.createElement('option');
-        option.textContent = dataDocument['Year'];
-        if (dataDocument['Year'] == currentYear) {
+        option.textContent = yearDocument['Year'];
+        if (yearDocument['Year'] == currentYear) {
             option.selected = true;
         }
 
@@ -105,12 +118,12 @@ async function fetchInstitutionData() {
 }
 
 async function fetchStudentData(year) {
-    if (students.has(year) || !dataDocuments.has(year)) {
+    if (students.has(year) || !yearDocuments.has(year)) {
         clearMarkers();
         return Promise.resolve();
     }
 
-    const tabletop = await fetchTabletopData(dataDocuments.get(year));
+    const tabletop = await fetchTabletopData(yearDocuments.get(year).sheetID);
     clearMarkers();
     students.set(year, tabletop.sheets('raw').all());
 }
@@ -151,6 +164,10 @@ function displayMap(year, firstLoad) {
         ])
     ]).then(function() {
         elements.map.classList.remove('loading');
+        if (yearDocuments.get(year).formURL) {
+            elements.submitDestination.submitLink.href = yearDocuments.get(year).formURL;
+            elements.submitDestination.submitYear.textContent = year;
+        }
     });
 }
 
@@ -365,7 +382,7 @@ function sleep(millis) {
 }
 
 function debugInstitutionLogos() {
-    for (let year of dataDocuments.keys()) {
+    for (let year of yearDocuments.keys()) {
         if (!students.get(year)) continue;
 
         for (let student of students.get(year)) {
