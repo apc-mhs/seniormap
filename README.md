@@ -1,5 +1,5 @@
 # seniormap
-An interactive map of GMHS seniors' college/postsecondary destinations.  Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom right corner.
+An interactive map of GMHS seniors' college/postsecondary destinations.  Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom left corner.
 
 ## Maintainence instructions 
 ### Creating a the form and spreadsheet for a new year
@@ -7,7 +7,7 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access.
 2. Make a copy of a previous year's form and edit content accordingly for the appropriate year.
 3. Ensure the form has a linked Google spreadsheet with the appropriate fields.
-![Screenshot of creating linked spreadsheet](resources/readme/tut1.png)
+![Screenshot of creating linked spreadsheet](resources/readme/createLinkedSheet.png)
 4. Publish the spreadsheet to the web (File > Publish to the web; link will then be provided).
 
 ### Adding the new year to the code base
@@ -16,16 +16,16 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
    - For example: `['2027', 'a8a8a8a8a8a8a8a8a8a8a8a8a8a'],`
 2. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created. 
 3. In the same spreadsheet, create an entry for the corresponding Google form submission link in the right adjacent cell. This link appear on the map so students can submit their post-secondary destination. 
-![Screenshot of 'Year Data' cells](resources/readme/tut5.png).
+![Screenshot of 'Year Data' cells](resources/readme/yearDataSheet.png).
 
 ### Obtaining and readying senior portraits of students
 
 1. Email the GMHS registrar, Lynette Kemp, for a list of students in your grade. The registrar is the administrator who manages student enrollment and will have this information on hand; their contact information is listed in the [GMHS staff directory](https://www.fccps.org/o/gmhs/staff?filter_id=%5B68455%5D).
 2. Email the yearbook club teacher lead and ask for senior portraits for the senior map. They will share a folder with you on Google Drive containing all the portraits.
    - These images will be in alphabetical order with file names of 00001.jpeg, 00002.jpeg, etc.
-   ![Screenshot of numbered senior portraits](resources/readme/tut6.png)
+   ![Screenshot of numbered senior portraits](resources/readme/sharedPortraits.png)
 3. Download all of the photos from Google Drive into a folder on your desktop.
-4. Download the photo naming script available at [`resources/tools/namePictures.py`](https://github.com/apc-gmhs/seniormap/blob/gh-pages/resources/tools/namePictures.py).
+4. Download the photo naming script available at [`resources/tools/namePictures.py`](resources/tools/namePictures.py).
 5. Convert the spreadsheet of names into a 2D array to replace `[['firstname', 'lastname']]`.
    - For example `[['Bill', 'Axel'], ['Sally', 'Breeze'], ['Manuel','Collins']]`
    - There's a number of online tools that will do this for you, such as [this site](https://www.seabreezecomputers.com/excel2array).
@@ -41,10 +41,10 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 3. If the student does not appear on the map, the college they are attending must be added .
    - To do this, create a new entry in 'Shared Data' (Senior Map/Shared Data/Location Information) for both the coordinates and logos subsheets.
    - Mimicking existing cells, add the coordinates, and the logo to the entries.
-   ![Screenshot of logo cells](resources/readme/tut3.png)
-   ![Screenshot of logo cells](resources/readme/tut4.png)
+   ![Screenshot of logo cells](resources/readme/coordinatesSheet.png)
+   ![Screenshot of logo cells](resources/readme/logoSheet.png)
    - A good way to see if certain schools don't have logos is by using the developer console. The names of institutions missing logos will appear here.
-   ![Screenshot of logo cells](resources/readme/tut2.png)
+   ![Screenshot of logo cells](resources/readme/consoleErrorReporting.png)
 4. After ensuring the student appears, mark them visible!
 
 ### Passing the map onto future classes 
@@ -55,4 +55,10 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 
 ---
 
-If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers. Also make sure you publicize the map to your class to carry on the tradition! Talk to your class officers about posting the map on Schoology, reach out to your college counselor about sending the map out and consider sharing the map on social media.
+If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers, listed below: 
+
+- [Erik Boesen](https://github.com/ErikBoesen), Class of 2019 
+- [Andrew Lester](https://github.com/AndrewLester), Class of 2021
+- [Jonathan Oppenheimer](https://github.com/TheBlueness), Class of 2021
+
+Also make sure you publicize the map to your class to carry on the tradition! Talk to your class officers about posting the map on Schoology, reach out to your college counselor about sending the map out and consider sharing the map on social media.
