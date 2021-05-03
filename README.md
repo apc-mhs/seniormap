@@ -14,9 +14,8 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 
 1. Within `js/scripts.js`, search for "README FLAG" and follow the instructions to add an entry, with the spreadsheet's datasheet URL for the appropriate year.
    - For example: `['2027', 'a8a8a8a8a8a8a8a8a8a8a8a8a8a'],`
-2. Within `index.html` update the linked form link to the latest year.
-   - For example: `<p><a href="https://forms.gle/form">Submit your destination here</a></p>`
-3. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created. 
+2. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created. 
+3. In the same spreadsheet, create an entry for the corresponding Google form submission link in the right adjacent cell. This link appear on the map so students can submit their post-secondary destination. 
 ![Screenshot of 'Year Data' cells](resources/readme/tut5.png).
 
 ### Obtaining and readying senior portraits of students
