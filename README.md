@@ -2,7 +2,7 @@
 An interactive map of GMHS seniors' college/postsecondary destinations.  Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom left corner.
 
 ## Maintainence instructions 
-### Creating a the form and spreadsheet for a new year
+### Creating the form and spreadsheet for a new year
 
 1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access.
 2. Make a copy of a previous year's form and edit content accordingly for the appropriate year.
