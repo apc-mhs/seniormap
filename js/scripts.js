@@ -184,15 +184,15 @@ function buildInstitutionData(year) {
                 console.error('No location data found for Institution: ' + student['Institution name']);
             }
 
-            institutions[student['Institution name'].trim()] = {
-                name: student['Institution name'].trim(),
+            institutions[student['Institution name']] = {
+                name: student['Institution name'],
                 students: [],
-                position: coordinates.get(student['Institution name'].trim()),
+                position: coordinates.get(student['Institution name']),
             }
         }
-        institutions[student['Institution name'].trim()].students.push({
-            name: student['First name'].trim() + ' ' + student['Last name'].trim(),
-            major: student['Intended major(s) or field(s) of study'].trim(),
+        institutions[student['Institution name']].students.push({
+            name: student['First name'] + ' ' + student['Last name'],
+            major: student['Intended major(s) or field(s) of study'],
         });
     }
 
