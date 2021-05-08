@@ -7,7 +7,7 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access.
 2. Make a copy of a previous year's form and edit content accordingly for the appropriate year.
 3. Ensure the form has a linked Google spreadsheet with the appropriate fields.
-![Screenshot of creating linked spreadsheet](resources/readme/createLinkedSheet.png)
+![Screenshot of creating linked spreadsheet](resources/readme/create_linked_sheet.png)
 4. Publish the spreadsheet to the web (File > Publish to the web; link will then be provided).
 
 ### Adding the new year to the code base
@@ -16,14 +16,14 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
    - For example: `['2027', 'a8a8a8a8a8a8a8a8a8a8a8a8a8a'],`
 2. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created. 
 3. In the same spreadsheet, create an entry for the corresponding Google form submission link in the right adjacent cell. This link appear on the map so students can submit their post-secondary destination. 
-![Screenshot of 'Year Data' cells](resources/readme/yearDataSheet.png).
+![Screenshot of 'Year Data' cells](resources/readme/year_data_sheet.png).
 
 ### Obtaining and readying senior portraits of students
 
 1. Email the GMHS registrar, Lynette Kemp, for a list of students in your grade. The registrar is the administrator who manages student enrollment and will have this information on hand; their contact information is listed in the [GMHS staff directory](https://www.fccps.org/o/gmhs/staff?filter_id=%5B68455%5D).
 2. Email the yearbook club teacher lead and ask for senior portraits for the senior map. They will share a folder with you on Google Drive containing all the portraits.
    - These images will be in alphabetical order with file names of 00001.jpeg, 00002.jpeg, etc.
-   ![Screenshot of numbered senior portraits](resources/readme/sharedPortraits.png)
+   ![Screenshot of numbered senior portraits](resources/readme/shared_portraits.png)
 3. Download all of the photos from Google Drive into a folder on your desktop.
 4. Download the photo naming script available at [`resources/tools/namePictures.py`](resources/tools/namePictures.py).
 5. Convert the spreadsheet of names into a 2D array to replace `[['firstname', 'lastname']]`.
@@ -41,10 +41,10 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
 3. If the student does not appear on the map, the college they are attending must be added .
    - To do this, create a new entry in 'Shared Data' (Senior Map/Shared Data/Location Information) for both the coordinates and logos subsheets.
    - Mimicking existing cells, add the coordinates, and the logo to the entries.
-   ![Screenshot of logo cells](resources/readme/coordinatesSheet.png)
-   ![Screenshot of logo cells](resources/readme/logoSheet.png)
+   ![Screenshot of coordinate cells](resources/readme/coordinates_sheet.png)
+   ![Screenshot of logo cells](resources/readme/logo_sheet.png)
    - A good way to see if certain schools don't have logos is by using the developer console. The names of institutions missing logos will appear here.
-   ![Screenshot of logo cells](resources/readme/consoleErrorReporting.png)
+   ![Screenshot of console errors](resources/readme/console_error_reporting.png)
 4. After ensuring the student appears, mark them visible!
 
 ### Passing the map onto future classes 
