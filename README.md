@@ -31,8 +31,13 @@ An interactive map of GMHS seniors' college/postsecondary destinations.  Created
    - There's a number of online tools that will do this for you, such as [this site](https://www.seabreezecomputers.com/excel2array).
 6. Run the Python script, renaming all of the unnamed photos to their corresponding student names. 
    - It's important to note that both the array of names and the student photos must be aligned and set up correctly to function properly. For example if a student is present in the array, but doesn't have a photo, all of the photo's names will be off by one. Setting up the script correctly is a little bit time consuming, but far faster than manually renaming each photo.
-7. Create a new folder inside of `portraits` named with the corresponding year.
-8. Upload the pictures to that folder.
+7. Compress all pictures in that folder using this command (make sure you've installed NodeJS first):
+```bash
+npx @squoosh/cli --resize '{"enabled":true,"width":240,"height":300,"method":"lanczos3","fitMethod":"stretch","premultiply":true,"linearRGB":true}' --mozjpeg '{"quality":50,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":false,"trellis_opt_zero":false,"trellis_opt_table":false,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' *.jpg
+``` 
+8. Create a new folder inside of the [seniormap-portraits bucket](https://console.cloud.google.com/storage/browser/seniormap-portraits;tab=objects?forceOnBucketsSortingFiltering=false&project=senior-map-277617&prefix=&forceOnObjectsSortingFiltering=false) named with the corresponding year.
+9. Upload the pictures to that folder.
+
 
 ### Adding a new student to the map after form submission 
 
