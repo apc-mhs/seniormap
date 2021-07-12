@@ -265,7 +265,7 @@ function details(institution) {
         studentPhoto.src = getPortraitUrl(currentYear, student.name);
         imageExists(studentPhoto.src, function(exists) {
             if (!exists) {
-                studentPhoto.src = 'images/blankHead.png';
+                studentPhoto.src = 'img/blankHead.png';
             }
         });
         studentPhoto.alt = student.name + ' portrait';
