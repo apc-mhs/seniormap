@@ -2,6 +2,15 @@
 An interactive map of GMHS seniors' college/postsecondary destinations.  Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom left corner.
 
 ## Maintainence instructions 
+### Setting up the developement enviroment on your computer
+
+All students who wish to work on the seniormap will have to set up the website on their own computer.
+1. Clone the Github repository found at https://github.com/apc-gmhs/seniormap onto your computer.
+2. Get in contact with an APC leader to request the developement key for the Google Maps API.
+3. Enter the key into this URL: https://maps.googleapis.com/maps/api/js?key=DEVELOPEMENTKEYGOESHERE&callback=initMap found at the bottom of index.html
+4. When you are done making your changes, you cannot simply open index.html in your web browser. Doing so will result in the following error: ![image](https://user-images.githubusercontent.com/57159537/128790953-00e1c4ee-92c1-4475-af0e-127819103c97.png). You must create a http server locally. In the root of the seniormap project enter the commands `python -m SimpleHTTPServer 8080`, or `python -3 -m http.server 8080`. You can then visit your website with your changes at localhost:8080. (Note that the port, which is 8080 in the example, can be any port number that is not already in use)
+5. Please change the developement key you entered back to the production key before commiting your changes.
+
 ### Creating the form and spreadsheet for a new year
 
 1. Navigate to the ['Senior Map' folder](https://drive.google.com/drive/folders/1Jko-Gei3H9em6nXjL_Tia8j4NNptmD6k) on Google Drive and create a new folder with the year of the graduating class (e.g. 2027). Request access to the folder if you do not already have access.
