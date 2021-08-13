@@ -20,13 +20,13 @@ function loadStatistics(year, stats) {
     statistics.class.textContent = year;
     statistics.stats.students.textContent = students.get(year).length;
 
-    if (!stats.get(year)['Number of destinations']) {
+    if (!stats.get(parseInt(year))['Number of destinations']) {
         statistics.container.classList.add('no-data');
     }
 
-    statistics.stats.destinations.textContent = stats.get(year)['Number of destinations'];
-    statistics.stats.states.textContent = stats.get(year)['Number of states'];
-    statistics.stats.countries.textContent = stats.get(year)['Number of countries'];
+    statistics.stats.destinations.textContent = stats.get(parseInt(year))['Number of destinations'];
+    statistics.stats.states.textContent = stats.get(parseInt(year))['Number of states'];
+    statistics.stats.countries.textContent = stats.get(parseInt(year))['Number of countries'];
 }
 
 function hideStatisticsPanel() {
