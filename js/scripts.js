@@ -33,19 +33,21 @@ var popupOpen = false;
 // Portraits settings
 var portraitsBucketName = 'seniormap-portraits';
 
-// Sheets settings
-var institutionDataSheet = '1qEcBuuRtQT-hE_JyX6SlMxTodvXCtAXX1LSB4ABBlXU';
-var yearDocumentsSheet = '1VZmrdC-rm6noqxMoFWiPimOiM3-zmhk5kOmJ8RppU9w';
+// All google sheet published urls. These can be found in the shared seniormap google drive.
+var institutionDataSheetCoordinates = '2PACX-1vQnBlXwk6cpRpt-IVttNNCBvgySJl_JDVursNLtlB7IWtgTU5fBgldmFGudv-6oEwe-LeP8T-mzqylx/pub?gid=0';
+var institutionDataSheetLogos = '2PACX-1vQnBlXwk6cpRpt-IVttNNCBvgySJl_JDVursNLtlB7IWtgTU5fBgldmFGudv-6oEwe-LeP8T-mzqylx/pub?gid=933441586';
+var yearDocumentsSheetMain = '2PACX-1vRIX7bc0mlzPt-j5OWAIOYZsUEsrK5XWM_Q7hH4Zy-XSXkeP55CLXJv6vSRtZLZZ19v_OAA4yqzGCDU/pub?gid=0';
+var yearDocumentsSheetStats = '2PACX-1vRIX7bc0mlzPt-j5OWAIOYZsUEsrK5XWM_Q7hH4Zy-XSXkeP55CLXJv6vSRtZLZZ19v_OAA4yqzGCDU/pub?gid=1838156495';
 // README FLAG: A new year and datasheet URL must be added to this array for the script to access the data on the spreadsheet
 var yearDocuments = new Map([
     ['2019', {
-        sheetID: '18JTbEUmTiUCMbazqj593Q6QNfpQZbjSiKUpHrWF9EGc'
+        sheetID: '2PACX-1vTe2fyt0NM0OYo1L03a3YLpJf065YBtK-gyUnM8gFnSfiRygSYm0LGJpRZv8SxTUs3Zaqx04wIk5LP3/pub?gid=579173246'
     }],
     ['2020', {
-        sheetID: '1aPQuyvb8Y1SH37kkD1eVFftkscHB63cnU92HQeuR9n4'
+        sheetID: '2PACX-1vR3i4CkFe9kAaep1AiPzoQ_aoO5FgbHIpUT2YXxVgln4E3QscVM2Ve3xSAFBfpKS_3SLqxhQqpgeior/pub?gid=550355729'
     }],
     ['2021', {
-        sheetID: '1Puj3Apgo7cK5AD-x25RTvHUbs9yGzdtBZUFsp13-z0k'
+        sheetID: '2PACX-1vRtb070z_anIOUPxB-srelTuhVUZtxKPSwF95ut9vwgst9J_JlW9-RoA1xF2dk4lm7YGayrrwrd5i12/pub?gid=421865614'
     }],
 ]);
 var stats = new Map();
@@ -80,14 +82,19 @@ function initMap() {
         // Student data is fetched again in displayMap, so if the sheet ID
         // wasn't already in the students Map, the one from the yearDocument is used
         fetchStudentData(currentYear)
-    ]).then(() => displayMap(currentYear, true));
+    ]).then(() => {
+        displayMap(currentYear, true);
+    });
 }
 
 async function fetchYearDocuments() {
-    const tabletop = await fetchTabletopData(yearDocumentsSheet);
+    
+    const papaMain = await fetchPapaData(yearDocumentsSheetMain);
+    const papaStats = await fetchPapaData(yearDocumentsSheetStats);
+    
     // Clear defaultSelectOption
     elements.options.year.innerHTML = '';
-    for (let yearDocument of tabletop.sheets('main').all()) {
+    for (let yearDocument of papaMain['data']) {
         yearDocuments.set(yearDocument['Year'], {
             sheetID: yearDocument['Datasheet URL'],
             formURL: yearDocument['Form URL']
@@ -101,24 +108,26 @@ async function fetchYearDocuments() {
 
         elements.options.year.prepend(option);
     }
+    
 
-    for (let yearStats of tabletop.sheets('stats').all()) {
+    for (let yearStats of papaStats['data']) {
         stats.set(yearStats['Year'], yearStats);
         delete yearStats['Year'];
     }
 }
 
 async function fetchInstitutionData() {
-    const tabletop = await fetchTabletopData(institutionDataSheet);
+    const papaCoords = await fetchPapaData(institutionDataSheetCoordinates);
+    const papaLogos = await fetchPapaData(institutionDataSheetLogos);
     // Turn 2D list into easily-subscriptable object
-    for (let institution of tabletop.sheets('coordinates').all()) {
+    for (let institution of papaCoords['data']) {
         coordinates.set(institution['Name'], {
             lat: parseFloat(institution['lat']),
             lng: parseFloat(institution['lng']),
         });
     }
 
-    for (let logo of tabletop.sheets('logos').all()) {
+    for (let logo of papaLogos['data']) {
         logos.set(logo['Name'], logo['Logo']);
     }
 }
@@ -129,20 +138,25 @@ async function fetchStudentData(year) {
         return Promise.resolve();
     }
 
-    const tabletop = await fetchTabletopData(yearDocuments.get(year).sheetID);
+    const papa = await fetchPapaData(yearDocuments.get(year).sheetID);
     clearMarkers();
-    students.set(year, tabletop.sheets('raw').all());
+    students.set(year, papa['data']);
 }
 
-function fetchTabletopData(sheetID) {
+function fetchPapaData(sheetID) {
     var fetchFunction = function fetchData(resolve, reject) {
-        Tabletop.init({
-            key: sheetID,
+        // Main parsing function to turn the csv from the internet into a nice js object.
+        // Very helpful documentation can be found at https://www.papaparse.com/docs
+        Papa.parse(`https://docs.google.com/spreadsheets/d/e/${sheetID}&single=true&output=csv`, {
+            header: true,
+            download: true,
+            delimiter: ',',
+            dynamicTyping: true,
             error: reject,
-            callback: function(_, tabletop) {
-                resolve(tabletop);
-            },
-            simpleSheet: true
+            // "complete:" is the callback when the parser finishes, and spits out its finished data (the data is stored in the 'papa' variable)
+            complete: function(papa, _) {
+                resolve(papa);
+            }
         });
     }
 
@@ -154,6 +168,7 @@ function displayMap(year, firstLoad) {
     clearPopups();
     hideStatisticsPanel();
 
+    
     Promise.all([
         // Minimum delay of 300ms if not the first load
         Promise.all([
