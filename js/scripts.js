@@ -108,7 +108,6 @@ async function fetchYearDocuments() {
 
         elements.options.year.prepend(option);
     }
-    
 
     for (let yearStats of papaStats['data']) {
         stats.set(yearStats['Year'], yearStats);
