@@ -168,7 +168,6 @@ function displayMap(year, firstLoad) {
     clearPopups();
     hideStatisticsPanel();
 
-    
     Promise.all([
         // Minimum delay of 300ms if not the first load
         Promise.all([
