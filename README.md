@@ -1,7 +1,9 @@
 # seniormap
-An interactive map of GMHS seniors' college/postsecondary destinations.  Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom left corner.
+An interactive map of GMHS seniors' college/postsecondary destinations. Created by Erik Boesen (GMHS Class of 2019), the map is now maintained by the GMHS Advanced Programming Club. If you'd like to make a submission, please visit [the map](https://apc-gm.com/seniormap) and click on the form in the bottom left corner.
 
-## Maintainence instructions 
+![Map Screenshot](screenshot.png)
+
+## Maintainence instructions
 ### Setting up the developement enviroment on your computer
 
 All students who wish to work on the seniormap will have to set up the website on their own computer.
@@ -25,8 +27,8 @@ All students who wish to work on the seniormap will have to set up the website o
 
 1. Within `js/scripts.js`, search for "README FLAG" and follow the instructions to add an entry, with the spreadsheet's datasheet URL for the appropriate year.
    - For example: `['2027', 'a8a8a8a8a8a8a8a8a8a8a8a8a8a'],`
-2. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created. 
-3. In the same spreadsheet, create an entry for the corresponding Google form submission link in the right adjacent cell. This link appear on the map so students can submit their post-secondary destination. 
+2. Create an entry for the student submission spreadsheet you created previously in the 'Year Data' sheet (Senior Map/Shared Data/Year Data). Mimick the existing entry cells and paste the datasheet URL next to the year you created.
+3. In the same spreadsheet, create an entry for the corresponding Google form submission link in the right adjacent cell. This link appear on the map so students can submit their post-secondary destination.
 ![Screenshot of 'Year Data' cells](resources/readme/year_data_sheet.png).
 4. Navigate to the [Senior Map Stats Processor](https://script.google.com/d/1e7sXhj4i-caj1n9NKWWG1OcA8QSC51SULYJdCsqF82vyFqW9ESKs58U4/edit?usp=sharing) and click "Run." This will synchronize the stats script with your new Google Sheet ID from the Year Data sheet.
 
@@ -41,17 +43,17 @@ All students who wish to work on the seniormap will have to set up the website o
 5. Convert the spreadsheet of names into a 2D array to replace `[['firstname', 'lastname']]`.
    - For example `[['Bill', 'Axel'], ['Sally', 'Breeze'], ['Manuel','Collins']]`
    - There's a number of online tools that will do this for you, such as [this site](https://www.seabreezecomputers.com/excel2array).
-6. Run the Python script, renaming all of the unnamed photos to their corresponding student names. 
+6. Run the Python script, renaming all of the unnamed photos to their corresponding student names.
    - It's important to note that both the array of names and the student photos must be aligned and set up correctly to function properly. For example if a student is present in the array, but doesn't have a photo, all of the photo's names will be off by one. Setting up the script correctly is a little bit time consuming, but far faster than manually renaming each photo.
 7. Compress all pictures in that folder using the [compress.sh script](readme/tools/compress.sh) (make sure you've installed NodeJS first). Move the script into your folder with senior portraits and run:
 ```bash
 source compress.sh
-``` 
+```
 8. Create a new folder inside of the [seniormap-portraits bucket](https://console.cloud.google.com/storage/browser/seniormap-portraits;tab=objects?forceOnBucketsSortingFiltering=false&project=senior-map-277617&prefix=&forceOnObjectsSortingFiltering=false) named with the corresponding year.
 9. Upload the pictures to that folder.
 
 
-### Adding a new student to the map after form submission 
+### Adding a new student to the map after form submission
 
 1. After a student submits the form, a new entry will appear in the the corresponding spreadsheet.
 2. If the student appears on the map, highlight the entry in green to indicate they're visible.
@@ -64,7 +66,7 @@ source compress.sh
    ![Screenshot of console errors](resources/readme/console_error_reporting.png)
 4. After ensuring the student appears, mark them visible!
 
-### Passing the map onto future classes 
+### Passing the map onto future classes
 1. Find an experienced leadership member of the APC who is a student in the next graduating class who is able and willing to take over the map.
 2. Request their personal email address and transfer ownership of the Senior Map Google Cloud Project to them.
 3. Give their student email account ownership of all Senior Map Google Drive folders **AND** files. They must be made an owner of **ALL** Senior Map files individually, as this prevents the files from getting removed when your own Google account is marked for deletion.
@@ -73,9 +75,9 @@ source compress.sh
 
 ---
 
-If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers, listed below: 
+If you have any questions about the codebase/maintaining it, or adding a new class to the page, don't hesistate to reach out to past maintainers, listed below:
 
-- [Erik Boesen](https://github.com/ErikBoesen), Class of 2019 
+- [Erik Boesen](https://github.com/ErikBoesen), Class of 2019
 - [Andrew Lester](https://github.com/AndrewLester), Class of 2021
 - [Jonathan Oppenheimer](https://github.com/TheBlueness), Class of 2021
 
