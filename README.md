@@ -4,7 +4,7 @@ An interactive map of GMHS seniors' college/postsecondary destinations. Created 
 ![Map Screenshot](screenshot.png)
 
 ## Maintainence instructions
-### Setting up the developement enviroment on your computer
+### Setting up the development enviroment on your computer
 
 All students who wish to work on the seniormap will have to set up the website on their own computer.
 1. Clone the Github repository found at https://github.com/apc-gmhs/seniormap onto your computer.
