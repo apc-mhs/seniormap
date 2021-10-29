@@ -45,7 +45,7 @@ All students who wish to work on the seniormap will have to set up the website o
    - There's a number of online tools that will do this for you, such as [this site](https://www.seabreezecomputers.com/excel2array).
 6. Run the Python script, renaming all of the unnamed photos to their corresponding student names.
    - It's important to note that both the array of names and the student photos must be aligned and set up correctly to function properly. For example if a student is present in the array, but doesn't have a photo, all of the photo's names will be off by one. Setting up the script correctly is a little bit time consuming, but far faster than manually renaming each photo.
-7. Compress all pictures in that folder using the [compress.sh script](readme/tools/compress.sh) (make sure you've installed NodeJS first). Move the script into your folder with senior portraits and run:
+7. Compress all pictures in that folder using the [compress.sh script](resources/tools/compress.sh) (make sure you've installed NodeJS first). Move the script into your folder with senior portraits and run:
 ```bash
 source compress.sh
 ```
