@@ -98,7 +98,7 @@ async function fetchYearDocuments() {
     // Clear defaultSelectOption
     elements.options.year.innerHTML = '';
     for (let yearDocument of papaMain['data']) {
-        yearDocuments.set(yearDocument['Year'], {
+        yearDocuments.set(yearDocument['Year'].toString(), {
             sheetID: yearDocument['Datasheet URL'],
             formURL: yearDocument['Form URL']
         });
