@@ -20,7 +20,7 @@ All students who wish to work on the seniormap will have to set up the website o
 3. Ensure the form has a linked Google spreadsheet with the appropriate fields.
 ![Screenshot of creating linked spreadsheet](resources/readme/create_linked_sheet.png)
 4. Publish the spreadsheet to the web (File > Share > Publish to web; link will then be provided).
-5. Add the [Trimmer.gs script](resources/tools/Trimmer.gs) to the spreadsheet (Tools > Script Editor > paste in).
+5. Add the [Trimmer.gs script](resources/tools/Trimmer.gs) to the spreadsheet (Extensions > Apps Scripts > paste in).
 6. Save the code, then click "Select Code Function" and choose "installTriggers." Then click the play button.
 
 ### Adding the new year to the code base
