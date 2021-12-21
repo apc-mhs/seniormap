@@ -49,6 +49,9 @@ var yearDocuments = new Map([
     ['2021', {
         sheetID: '2PACX-1vRtb070z_anIOUPxB-srelTuhVUZtxKPSwF95ut9vwgst9J_JlW9-RoA1xF2dk4lm7YGayrrwrd5i12/pub?gid=421865614'
     }],
+    ['2022', {
+        sheetID: '2PACX-1vQ_Iy5L276joQEta-3MovmBmcZh2sh4WMhYzO-vzAQhzuY2S8eL2MPw7h3BCrQGahRtCWscNr34-CEh/pub?gid=1927517379'
+    }]
 ]);
 var stats = new Map();
 
