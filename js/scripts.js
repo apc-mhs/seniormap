@@ -136,12 +136,10 @@ async function fetchInstitutionData() {
 
 async function fetchStudentData(year) {
     if (students.has(year) || !yearDocuments.has(year)) {
-        clearMarkers();
-        return Promise.resolve();
+        return;
     }
 
     const papa = await fetchPapaData(yearDocuments.get(year).sheetID);
-    clearMarkers();
     students.set(year, papa['data']);
 }
 
@@ -176,8 +174,9 @@ function displayMap(year, firstLoad) {
             fetchStudentData(year),
             sleep(firstLoad ? 0 : 300)
         ])
+            .then(clearMarkers)
             .then(() => buildInstitutionData(year))
-            .then((institutions) => placeMarkers(institutions))
+            .then(placeMarkers)
             .then(() => loadStatistics(year, stats)),
         // Either the transition ends or its time is up
         Promise.race([
