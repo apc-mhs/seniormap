@@ -163,33 +163,23 @@ function fetchPapaData(sheetID) {
     return new Promise(fetchFunction);
 }
 
-function displayMap(year, firstLoad) {
+async function displayMap(year, firstLoad) {
     elements.map.classList.add('loading');
     clearPopups();
     hideStatisticsPanel();
 
-    Promise.all([
-        // Minimum delay of 300ms if not the first load
-        Promise.all([
-            fetchStudentData(year),
-            sleep(firstLoad ? 0 : 300)
-        ])
-            .then(clearMarkers)
-            .then(() => buildInstitutionData(year))
-            .then(placeMarkers)
-            .then(() => loadStatistics(year, stats)),
-        // Either the transition ends or its time is up
-        Promise.race([
-            transitionEnd(elements.map, 'filter'),
-            sleep(firstLoad ? 0 : 750)  // If it's the first load, don't wait any extra time
-        ])
-    ]).then(function() {
-        elements.map.classList.remove('loading');
-        if (yearDocuments.get(year).formURL) {
-            elements.submitDestination.submitLink.href = yearDocuments.get(year).formURL;
-            elements.submitDestination.submitYear.textContent = year;
-        }
-    });
+    // Minimum delay of 750ms if not the first load
+    await Promise.all([fetchStudentData(year), sleep(firstLoad ? 0 : 750)]);
+    const institutions = buildInstitutionData(year);
+    placeMarkers(institutions);
+    loadStatistics(year, stats);
+
+    elements.map.classList.remove('loading');
+    if (yearDocuments.get(year).formURL) {
+        elements.submitDestination.submitLink.href =
+            yearDocuments.get(year).formURL;
+        elements.submitDestination.submitYear.textContent = year;
+    }
 }
 
 function clearPopups() {
@@ -226,6 +216,8 @@ function buildInstitutionData(year) {
 }
 
 function placeMarkers(institutions) {
+    clearMarkers();
+
     for (name in institutions) {
         let marker = new google.maps.Marker(institutions[name]);
         google.maps.event.addListener(marker, 'click', function() {
