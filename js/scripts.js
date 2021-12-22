@@ -413,10 +413,10 @@ function debugInstitutionLogos() {
 
 function debugInstitutionLogosImageExistence() {
     // Check to ensure the URL to each institution's logo image hasn't moved, died, etc.
-    for (let image of logos) {
-        imageExists(image[1], exists => {
+    for (const [ instiutionName, url] of logos) {
+        imageExists(url, exists => {
             if (!exists) {
-                console.log(`Link for the logo of ${image[0]} does not return a valid image. URL: ${image[1]}`)
+                console.log(`Link for the logo of ${instiutionName} does not return a valid image. URL: ${url}`);
             }
         });
     }
