@@ -132,6 +132,7 @@ async function fetchInstitutionData() {
     for (let logo of papaLogos['data']) {
         logos.set(logo['Name'], logo['Logo']);
     }
+    debugInstitutionLogosImageExistence();
 }
 
 async function fetchStudentData(year) {
@@ -398,6 +399,7 @@ function sleep(millis) {
 }
 
 function debugInstitutionLogos() {
+    // Check to ensure each institution has a logo
     for (let year of yearDocuments.keys()) {
         if (!students.get(year)) continue;
 
@@ -406,6 +408,17 @@ function debugInstitutionLogos() {
                 console.warn('No logo found for Institution: ' + student['Institution name']);
             }
         }
+    }
+}
+
+function debugInstitutionLogosImageExistence() {
+    // Check to ensure the URL to each institution's logo image hasn't moved, died, etc.
+    for(let image of logos) {
+        imageExists(image[1], exists => {
+            if (!exists) {
+                console.log(`Link for the logo of ${image[0]} does not return a valid image. URL: ${image[1]}`)
+            }
+        });
     }
 }
 
