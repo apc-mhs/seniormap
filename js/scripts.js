@@ -132,7 +132,6 @@ async function fetchInstitutionData() {
     for (let logo of papaLogos['data']) {
         logos.set(logo['Name'], logo['Logo']);
     }
-    debugInstitutionLogosImageExistence();
 }
 
 async function fetchStudentData(year) {
