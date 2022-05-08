@@ -3,7 +3,7 @@ An interactive map of GMHS seniors' college/postsecondary destinations. Created 
 
 ![Map Screenshot](screenshot.png)
 
-## Maintainence instructions
+## Maintenance instructions
 ### Setting up the development enviroment on your computer
 
 All students who wish to work on the seniormap will have to set up the website on their own computer.
