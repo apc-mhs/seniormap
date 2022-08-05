@@ -39,9 +39,12 @@ button:active, a.button:active {
     background-color: rgba(189, 29, 37, 0.8);
 }
 /* Google stuff */
-.gmnoscreen, .gmnoprint a, .gm-style-cc,
-div a[rel="noopener"] img {
+.gmnoscreen, .gmnoprint a, .gm-style-cc {
     display: none !important;
+}
+div a[rel="noopener"] img {
+    left: 50vw !important;
+    transform: translateX(-50%) !important;
 }
 #map {
     transition: filter ease 0.75s;
