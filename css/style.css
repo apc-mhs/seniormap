@@ -46,7 +46,7 @@ button:active, a.button:active {
     display: none !important;
 }
 div a[rel="noopener"] img {
-    left: calc(var(--branding-width) + 10px) !important;
+    left: calc(var(--branding-width) - 5px) !important;
 }
 #map {
     transition: filter ease 0.75s;
