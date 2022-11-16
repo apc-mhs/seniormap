@@ -588,7 +588,7 @@ var mapStyles = [
 // Only slightly scuffed solution to find a school from a list of institutions based on lat and lang
 function findSchoolFromLatLng(institutions, position) {
     for (school in institutions) {
-        if(institutions[school].position.lat.toFixed(2) == position.lat.toFixed(2) && institutions[school].position.lng.toFixed(2) == position.lng.toFixed(2)) {
+        if(google.maps.geometry.spherical.computeDistanceBetween(institutions[school].position, position) < 0.01) {
             return institutions[school];
         }
     }
