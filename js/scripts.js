@@ -261,21 +261,20 @@ function placeMarkers(institutions) {
         markers.push(marker);
     }
 
+    // Color markers according to the # of students attending (heatmap type coloring)
     for(let marker of markers) {
         institution = findSchoolFromLatLng(institutions, marker.position);
-        /*const pinViewScaled = new google.maps.marker.PinView({
-            scale: 1 + institution.students.length / 26,
-        });
-        marker.content = pinViewScaled.element;*/
-
         let numStudents = institution.students.length;
         let color;
+        // Bucket 1: 1 student attending
         if(numStudents <= 1) {
-            color = rgbToHex(255, 130, 130);
+            color = "#ff8282";
+        // Bucket 2: 2-5 students attending
         } else if(numStudents <= 5) {
-            color = rgbToHex(255, 45, 45);
+            color = "#ff2d2d";
+        // Bucket 3: 6+ students attending
         } else {
-            color = rgbToHex(200, 0, 0);
+            color = "#c80000";
         }
         const pinViewBackground = new google.maps.marker.PinView({
             background: color,
@@ -589,8 +588,3 @@ function findSchoolFromLatLng(institutions, position) {
         }
     }
 }
-
-const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
-    const hex = x.toString(16)
-    return hex.length === 1 ? '0' + hex : hex
-}).join('')
