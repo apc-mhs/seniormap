@@ -72,6 +72,7 @@ function initMap() {
             lng: -98
         },
         zoom: 4,
+        mapId: '92d55b75273490f',
         disableDefaultUI: true,
         zoomControl: true,
         mapTypeControl: false,
@@ -81,6 +82,16 @@ function initMap() {
         backgroundColor: '#333333',
         styles: mapStyles
     });
+
+    // THIS IS OPTIONAL
+    // It can be removed later, or be configured to be a fallback if the advanced markers ever break
+    map.addListener('mapcapabilities_changed', () => {
+        const mapCapabilities = map.getMapCapabilities();
+      
+        if (!mapCapabilities.isAdvancedMarkersAvailable) {
+            console.error("Advanced Markers failed to load. This could be for several reasons, but it could e that the \"mapId\" trait in the map is broken.")
+        }
+      });
 
     Promise.all([
         fetchYearDocuments(),
@@ -222,9 +233,16 @@ function placeMarkers(institutions) {
     clearMarkers();
 
     for (name in institutions) {
-        let marker = new google.maps.Marker(institutions[name]);
+
+        // Advanced Marker
+        // See https://developers.google.com/maps/documentation/javascript/advanced-markers/basic-customization to customize
+        let marker = new google.maps.marker.AdvancedMarkerView({
+            map,
+            position: institutions[name].position
+        });
+
         google.maps.event.addListener(marker, 'click', function() {
-            details(this);
+            details(this, institutions);
 
             if (panToMarkers) {
                 var scale = 1 / (1 << map.getZoom());
@@ -233,27 +251,51 @@ function placeMarkers(institutions) {
                 var offsetPerStudent = 40 * scale;
 
                 worldCoordinate.y -= defaultOffset +
-                    (offsetPerStudent * Math.min(5, this.students.length));
+                    (offsetPerStudent * Math.min(5, findSchoolFromLatLng(institutions, this.position).students.length));
                 worldCoordinate.y = Math.max(0, worldCoordinate.y);
 
                 var latLng = map.getProjection().fromPointToLatLng(worldCoordinate);
                 map.panTo(latLng);
             }
         });
-        marker.setMap(map);
         markers.push(marker);
     }
+
+    for(let marker of markers) {
+        institution = findSchoolFromLatLng(institutions, marker.position);
+        /*const pinViewScaled = new google.maps.marker.PinView({
+            scale: 1 + institution.students.length / 26,
+        });
+        marker.content = pinViewScaled.element;*/
+
+        let numStudents = institution.students.length;
+        let color;
+        if(numStudents <= 1) {
+            color = rgbToHex(255, 130, 130);
+        } else if(numStudents <= 5) {
+            color = rgbToHex(255, 45, 45);
+        } else {
+            color = rgbToHex(200, 0, 0);
+        }
+        const pinViewBackground = new google.maps.marker.PinView({
+            background: color,
+        });
+        marker.content = pinViewBackground.element;
+    }
+
     setMarkerPrecedence(elements.options.precedence.value == 'Bottom');
 }
 
 function clearMarkers() {
     for (marker of markers) {
-        marker.setMap(null);
+        marker.map = null;
     }
     markers = [];
 }
 
-function details(institution) {
+function details(marker, institutions) {
+    // Pretty sure Advanced Markers can't hold the student data like the old ones could, so this is a new solution
+    institution = findSchoolFromLatLng(institutions, marker.position);
     clearPopups();
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
@@ -268,6 +310,7 @@ function details(institution) {
     info.appendChild(institutionContainer);
     var studentsList = document.createElement('div');
     studentsList.className = 'students-list';
+
     for (student of institution.students) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
@@ -290,10 +333,11 @@ function details(institution) {
         studentContainer.appendChild(studentName);
         studentContainer.appendChild(studentMajor);
         studentsList.appendChild(studentContainer);
-    }
+    }   
+
     info.appendChild(studentsList);
     info.style.setProperty('--num-columns', Math.ceil(studentsList.children.length / 5));
-    popup = new Popup(new google.maps.LatLng(institution.position.lat(), institution.position.lng()), info);
+    popup = new Popup(new google.maps.LatLng(marker.position.lat, marker.position.lng), info);
     popup.setMap(map);
     console.log('Adding popup');
     popupOpen = true;
@@ -375,12 +419,12 @@ function setMarkerPrecedence(bottom) {
         let aPos = a.position || {lat: () => 0};
         let bPos = b.position || {lat: () => 0};
 
-        return bottomMultiplier * (aPos.lat() - bPos.lat());
+        return bottomMultiplier * (aPos.lat - bPos.lat);
     };
     markers.sort(sortFunction);
 
     for (var i = 0; i < markers.length; i++) {
-        markers[i].setZIndex(i);
+        markers[i].zIndex = i;
     }
 }
 
@@ -536,3 +580,17 @@ var mapStyles = [
         }]
     }
 ];
+
+// Only slightly scuffed solution to find a school from a list of institutions based on lat and lang
+function findSchoolFromLatLng(institutions, position) {
+    for (school in institutions) {
+        if(institutions[school].position.lat.toFixed(2) == position.lat.toFixed(2) && institutions[school].position.lng.toFixed(2) == position.lng.toFixed(2)) {
+            return institutions[school];
+        }
+    }
+}
+
+const rgbToHex = (r, g, b) => '#' + [r, g, b].map(x => {
+    const hex = x.toString(16)
+    return hex.length === 1 ? '0' + hex : hex
+}).join('')
