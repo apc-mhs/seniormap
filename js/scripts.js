@@ -262,22 +262,27 @@ function placeMarkers(institutions) {
     }
 
     // Color markers according to the # of students attending (heatmap type coloring)
-    for(let marker of markers) {
+    for (let marker of markers) {
         institution = findSchoolFromLatLng(institutions, marker.position);
         let numStudents = institution.students.length;
-        let color;
-        // Bucket 1: 1 student attending
-        if(numStudents <= 1) {
-            color = "#ff8282";
-        // Bucket 2: 2-5 students attending
-        } else if(numStudents <= 5) {
-            color = "#ff2d2d";
-        // Bucket 3: 6+ students attending
+        let backgroundColor, glyphColor;
+        
+        if (numStudents <= 1) {
+            // Bucket 1: 1 student attending
+            backgroundColor = "#ff8282";
+            glyphColor = "#b31512";
+        } else if (numStudents <= 5) {
+            // Bucket 2: 2-5 students attending
+            backgroundColor = "#ff2d2d";
+            glyphColor = "#99120f";
         } else {
-            color = "#c80000";
+            // Bucket 3: 6+ students attending
+            backgroundColor = "#c80000";
+            glyphColor = "#610c0a";
         }
         const pinViewBackground = new google.maps.marker.PinView({
-            background: color,
+            background: backgroundColor,
+            glyphColor: glyphColor
         });
         marker.content = pinViewBackground.element;
     }
