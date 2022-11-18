@@ -232,44 +232,14 @@ function buildInstitutionData(year) {
 function placeMarkers(institutions) {
     clearMarkers();
 
-    for (name in institutions) {
+    for (const name in institutions) {
+        const numStudents = parseInt(institutions[name].students.length);
+        // backgroundColor: color of the marker, glyphColor: color of the number on the marker, x: centering of the number
+        let backgroundColor, glyphColor, x = 26;
 
-        // Advanced Marker
-        // See https://developers.google.com/maps/documentation/javascript/advanced-markers/basic-customization to customize
-        let marker = new google.maps.marker.AdvancedMarkerView({
-            map,
-            position: institutions[name].position
-        });
-
-        google.maps.event.addListener(marker, 'click', function() {
-            details(this, institutions);
-
-            if (panToMarkers) {
-                var scale = 1 / (1 << map.getZoom());
-                var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
-                var defaultOffset = 80 * scale;
-                var offsetPerStudent = 40 * scale;
-
-                worldCoordinate.y -= defaultOffset +
-                    (offsetPerStudent * Math.min(5, findSchoolFromLatLng(institutions, this.position).students.length));
-                worldCoordinate.y = Math.max(0, worldCoordinate.y);
-
-                var latLng = map.getProjection().fromPointToLatLng(worldCoordinate);
-                map.panTo(latLng);
-            }
-        });
-        markers.push(marker);
-    }
-
-    // Color markers according to the # of students attending (heatmap type coloring)
-    for (let marker of markers) {
-        institution = findSchoolFromLatLng(institutions, marker.position);
-        let numStudents = institution.students.length;
-        let backgroundColor, glyphColor;
-        
         if (numStudents <= 1) {
             // Bucket 1: 1 student attending
-            backgroundColor = "#ff8282";
+            backgroundColor = "#ff5d5c";
             glyphColor = "#b31512";
         } else if (numStudents <= 5) {
             // Bucket 2: 2-5 students attending
@@ -280,11 +250,62 @@ function placeMarkers(institutions) {
             backgroundColor = "#c80000";
             glyphColor = "#610c0a";
         }
+        if(numStudents >= 10) {
+            // centering for 2 digit numbers
+            x = 2
+        }
+
+        const parser = new DOMParser();
+        const pinSvgString = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 100 100">
+            <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fredoka+One');   
+                #${name.replace(/\s/g, '').replace('&', '')} {
+                    font-size: 8em;
+                    fill: ${glyphColor};
+                    font-family: 'Fredoka One', cursive;
+                    font-weight: bold;
+                }
+            </style>
+            <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${x}" y="100">${numStudents}</text>
+        </svg>`;
+        const pinSvgElement = parser.parseFromString(pinSvgString, 'image/svg+xml').documentElement;
         const pinViewBackground = new google.maps.marker.PinView({
             background: backgroundColor,
-            glyphColor: glyphColor
+            glyph: pinSvgElement
         });
-        marker.content = pinViewBackground.element;
+        let marker = new google.maps.marker.AdvancedMarkerView({
+            map,
+            position: institutions[name].position,
+            // While the title is usually used for accessibility screen readers, its used here to contain the number of students attending the scool
+            title: String(numStudents),
+            content: pinViewBackground.element
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+            details(institutions[name]);
+
+            if (panToMarkers) {
+                var scale = 1 / (1 << map.getZoom());
+                var worldCoordinate = map.getProjection().fromLatLngToPoint(marker.position);
+                var defaultOffset = 80 * scale;
+                var offsetPerStudent = 40 * scale;
+
+                worldCoordinate.y -= defaultOffset +
+                    (offsetPerStudent * Math.min(5, institutions[name].students.length));
+                worldCoordinate.y = Math.max(0, worldCoordinate.y);
+
+                var latLng = map.getProjection().fromPointToLatLng(worldCoordinate);
+                map.panTo(latLng);
+            }
+        });
+        markers.push(marker);
+    }
+
+    // Color markers according to the # of students attending (heatmap type coloring) along with # of students as glyph
+    for (let marker of markers) {
+
+        
     }
 
     setMarkerPrecedence(elements.options.precedence.value == 'Bottom');
@@ -297,9 +318,7 @@ function clearMarkers() {
     markers = [];
 }
 
-function details(marker, institutions) {
-    // Pretty sure Advanced Markers can't hold the student data like the old ones could, so this is a new solution
-    institution = findSchoolFromLatLng(institutions, marker.position);
+function details(institution) {
     clearPopups();
     var info = document.createElement('div');
     var institutionContainer = document.createElement('div');
@@ -341,7 +360,7 @@ function details(marker, institutions) {
 
     info.appendChild(studentsList);
     info.style.setProperty('--num-columns', Math.ceil(studentsList.children.length / 5));
-    popup = new Popup(new google.maps.LatLng(marker.position.lat, marker.position.lng), info);
+    popup = new Popup(new google.maps.LatLng(institution.position.lat, institution.position.lng), info);
     popup.setMap(map);
     console.log('Adding popup');
     popupOpen = true;
@@ -584,12 +603,3 @@ var mapStyles = [
         }]
     }
 ];
-
-// Only slightly scuffed solution to find a school from a list of institutions based on lat and lang
-function findSchoolFromLatLng(institutions, position) {
-    for (school in institutions) {
-        if(google.maps.geometry.spherical.computeDistanceBetween(institutions[school].position, position) < 0.01) {
-            return institutions[school];
-        }
-    }
-}
