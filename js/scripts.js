@@ -302,12 +302,6 @@ function placeMarkers(institutions) {
         markers.push(marker);
     }
 
-    // Color markers according to the # of students attending (heatmap type coloring) along with # of students as glyph
-    for (let marker of markers) {
-
-        
-    }
-
     setMarkerPrecedence(elements.options.precedence.value == 'Bottom');
 }
 
