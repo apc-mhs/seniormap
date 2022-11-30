@@ -72,6 +72,7 @@ function initMap() {
             lng: -98
         },
         zoom: 4,
+        mapId: '92d55b75273490f',
         disableDefaultUI: true,
         zoomControl: true,
         mapTypeControl: false,
@@ -81,6 +82,16 @@ function initMap() {
         backgroundColor: '#333333',
         styles: mapStyles
     });
+
+    // THIS IS OPTIONAL
+    // It can be removed later, or be configured to be a fallback if the advanced markers ever break
+    map.addListener('mapcapabilities_changed', () => {
+        const mapCapabilities = map.getMapCapabilities();
+      
+        if (!mapCapabilities.isAdvancedMarkersAvailable) {
+            console.error("Advanced Markers failed to load. This could be for several reasons, but it could e that the \"mapId\" trait in the map is broken.")
+        }
+      });
 
     Promise.all([
         fetchYearDocuments(),
@@ -221,10 +232,47 @@ function buildInstitutionData(year) {
 function placeMarkers(institutions) {
     clearMarkers();
 
-    for (name in institutions) {
-        let marker = new google.maps.Marker(institutions[name]);
+    for (const name in institutions) {
+        const numStudents = parseInt(institutions[name].students.length);
+        
+        // Center 2 digit-long student counters
+        let x = numStudents >= 10 ? 2 : 26;
+
+        const parser = new DOMParser();
+        // SVG to create a number for schools with more than 1 student
+        const pinSvgString = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 100 100">
+            <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fredoka+One');   
+                #${name.replace(/\s/g, '').replace('&', '')} {
+                    font-size: 8em;
+                    fill: #891413;
+                    font-family: 'Fredoka One', cursive;
+                    font-weight: bold;
+                }
+            </style>
+            <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${x}" y="100">${numStudents}</text>
+        </svg>`;
+        // backgroundColor: color of the marker, glyphColor: color of the number on the marker, x: centering of the number
+        const pinSvgElement = parser.parseFromString(pinSvgString, 'image/svg+xml').documentElement;
+        const pinViewBackground = numStudents > 1 ? new google.maps.marker.PinView({
+            background: "#ED1C24",
+            glyph: pinSvgElement,
+            
+        }) : new google.maps.marker.PinView({
+            background: "#ED1C24",
+            glyphColor: "#891413",
+        });
+        let marker = new google.maps.marker.AdvancedMarkerView({
+            map,
+            position: institutions[name].position,
+            // While the title is usually used for accessibility screen readers, its used here to contain the number of students attending the scool
+            title: String(numStudents),
+            content: pinViewBackground.element
+        });
+
         google.maps.event.addListener(marker, 'click', function() {
-            details(this);
+            details(institutions[name]);
 
             if (panToMarkers) {
                 var scale = 1 / (1 << map.getZoom());
@@ -233,22 +281,22 @@ function placeMarkers(institutions) {
                 var offsetPerStudent = 40 * scale;
 
                 worldCoordinate.y -= defaultOffset +
-                    (offsetPerStudent * Math.min(5, this.students.length));
+                    (offsetPerStudent * Math.min(5, institutions[name].students.length));
                 worldCoordinate.y = Math.max(0, worldCoordinate.y);
 
                 var latLng = map.getProjection().fromPointToLatLng(worldCoordinate);
                 map.panTo(latLng);
             }
         });
-        marker.setMap(map);
         markers.push(marker);
     }
+
     setMarkerPrecedence(elements.options.precedence.value == 'Bottom');
 }
 
 function clearMarkers() {
     for (marker of markers) {
-        marker.setMap(null);
+        marker.map = null;
     }
     markers = [];
 }
@@ -268,6 +316,7 @@ function details(institution) {
     info.appendChild(institutionContainer);
     var studentsList = document.createElement('div');
     studentsList.className = 'students-list';
+
     for (student of institution.students) {
         var studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
@@ -290,10 +339,11 @@ function details(institution) {
         studentContainer.appendChild(studentName);
         studentContainer.appendChild(studentMajor);
         studentsList.appendChild(studentContainer);
-    }
+    }   
+
     info.appendChild(studentsList);
     info.style.setProperty('--num-columns', Math.ceil(studentsList.children.length / 5));
-    popup = new Popup(new google.maps.LatLng(institution.position.lat(), institution.position.lng()), info);
+    popup = new Popup(new google.maps.LatLng(institution.position.lat, institution.position.lng), info);
     popup.setMap(map);
     console.log('Adding popup');
     popupOpen = true;
@@ -375,12 +425,12 @@ function setMarkerPrecedence(bottom) {
         let aPos = a.position || {lat: () => 0};
         let bPos = b.position || {lat: () => 0};
 
-        return bottomMultiplier * (aPos.lat() - bPos.lat());
+        return bottomMultiplier * (aPos.lat - bPos.lat);
     };
     markers.sort(sortFunction);
 
     for (var i = 0; i < markers.length; i++) {
-        markers[i].setZIndex(i);
+        markers[i].zIndex = i;
     }
 }
 
