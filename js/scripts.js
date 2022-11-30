@@ -234,45 +234,34 @@ function placeMarkers(institutions) {
 
     for (const name in institutions) {
         const numStudents = parseInt(institutions[name].students.length);
-        // backgroundColor: color of the marker, glyphColor: color of the number on the marker, x: centering of the number
-        let backgroundColor, glyphColor, x = 26;
-
-        if (numStudents <= 1) {
-            // Bucket 1: 1 student attending
-            backgroundColor = "#ff5d5c";
-            glyphColor = "#b31512";
-        } else if (numStudents <= 5) {
-            // Bucket 2: 2-5 students attending
-            backgroundColor = "#ff2d2d";
-            glyphColor = "#99120f";
-        } else {
-            // Bucket 3: 6+ students attending
-            backgroundColor = "#c80000";
-            glyphColor = "#610c0a";
-        }
-        if(numStudents >= 10) {
-            // centering for 2 digit numbers
-            x = 2
-        }
+        
+        // Center 2 digit-long student counters
+        let x = numStudents >= 10 ? 2 : 26;
 
         const parser = new DOMParser();
+        // SVG to create a number for schools with more than 1 student
         const pinSvgString = `
         <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" viewBox="0 0 100 100">
             <style>
             @import url('https://fonts.googleapis.com/css2?family=Fredoka+One');   
                 #${name.replace(/\s/g, '').replace('&', '')} {
                     font-size: 8em;
-                    fill: ${glyphColor};
+                    fill: #891413;
                     font-family: 'Fredoka One', cursive;
                     font-weight: bold;
                 }
             </style>
             <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${x}" y="100">${numStudents}</text>
         </svg>`;
+        // backgroundColor: color of the marker, glyphColor: color of the number on the marker, x: centering of the number
         const pinSvgElement = parser.parseFromString(pinSvgString, 'image/svg+xml').documentElement;
-        const pinViewBackground = new google.maps.marker.PinView({
-            background: backgroundColor,
-            glyph: pinSvgElement
+        const pinViewBackground = numStudents > 1 ? new google.maps.marker.PinView({
+            background: "#ED1C24",
+            glyph: pinSvgElement,
+            
+        }) : new google.maps.marker.PinView({
+            background: "#ED1C24",
+            glyphColor: "#891413",
         });
         let marker = new google.maps.marker.AdvancedMarkerView({
             map,
