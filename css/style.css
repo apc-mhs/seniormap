@@ -6,6 +6,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+.yNHHyP-marker-view:focus {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    -ms-touch-action: manipulation !important;
+    touch-action: manipulation !important;
+}
 html, body, #map { height: 100%; }
 body {
     background-color: #333;

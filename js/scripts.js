@@ -15,12 +15,12 @@ const elements = {
 // Page state settings
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
-// the default in the selectYear dropdown. Currently, 2 (March 15th) is used
-var yearActivationMonth = 2;
+// the default in the selectYear dropdown. Currently, -1 and 1 (Previous grad year, December 1st) is used
+var yearActivationMonth = -1;
 var currentYear = new Date(
     today.getFullYear(),
     today.getMonth() - yearActivationMonth,
-    today.getDate() - 14
+    today.getDate() - 1
 ).getFullYear().toString();
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
@@ -237,6 +237,10 @@ function placeMarkers(institutions) {
         
         // Center 2 digit-long student counters
         let x = numStudents >= 10 ? 2 : 26;
+        // Check if the user is on a mobile device, and adjust svgs accoringly
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+            var mobile = true;
+        }
 
         const parser = new DOMParser();
         // SVG to create a number for schools with more than 1 student
@@ -248,7 +252,7 @@ function placeMarkers(institutions) {
                     font-size: 8em;
                     fill: #891413;
                     font-family: 'Fredoka One', cursive;
-                    font-weight: bold;
+                    font-weight: ${mobile ? "normal" : "bold"};
                 }
             </style>
             <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${x}" y="100">${numStudents}</text>
@@ -389,8 +393,7 @@ function onDragStart(e) {
 
 function onDragEnd(e) {
     // Check that we're not clicking a marker and that there was no dragging
-    if (e.target.tagName != 'IMG'
-        && dragged == false) {
+    if (e.target.tagName != 'path' && e.target.tagName != 'svg') {
         clearPopups();
     }
     dragged = false;
