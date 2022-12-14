@@ -15,12 +15,12 @@ const elements = {
 // Page state settings
 var today = new Date();
 // The yearActivationMonth determines the month that a specific year becomes
-// the default in the selectYear dropdown. Currently, 2 (March 15th) is used
-var yearActivationMonth = 2;
+// the default in the selectYear dropdown. Currently, -1 and 1 (Previous grad year, December 1st) is used
+var yearActivationMonth = -1;
 var currentYear = new Date(
     today.getFullYear(),
     today.getMonth() - yearActivationMonth,
-    today.getDate() - 14
+    today.getDate() - 1
 ).getFullYear().toString();
 // Using a default select option prevents a jump in the width of the select element
 var defaultSelectOption = document.createElement('option');
