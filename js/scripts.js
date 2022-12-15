@@ -322,7 +322,7 @@ function details(institution) {
     studentsList.className = 'students-list';
 
     for (student of institution.students) {
-        var studentPhoto = document.createElement('img'),
+        const studentPhoto = document.createElement('img'),
             studentName = document.createElement('p'),
             studentMajor = document.createElement('p');
         studentPhoto.src = getPortraitUrl(currentYear, student.name);
