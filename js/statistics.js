@@ -18,7 +18,14 @@ statistics.button.addEventListener('click', function() {
 function loadStatistics(year, stats) {
     statistics.container.classList.remove('no-data');
     statistics.class.textContent = year;
-    statistics.stats.students.textContent = students.get(year).length;
+
+    let numStudents = 0;
+    for (let submission of students.get(year)) {
+        if (submission['Institution name'] != null) {
+            numStudents++;
+        }
+    }
+    statistics.stats.students.textContent = numStudents;
 
     if (!stats.get(parseInt(year))['Number of destinations']) {
         statistics.container.classList.add('no-data');

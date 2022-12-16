@@ -236,7 +236,7 @@ function placeMarkers(institutions) {
         const numStudents = parseInt(institutions[name].students.length);
         
         // Center 2 digit-long student counters
-        let x = numStudents >= 10 ? 2 : 26;
+        let x = numStudents >= 10 ? 2 : 24;
         // Check if the user is on a mobile device, and adjust svgs accoringly
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
             var mobile = true;
