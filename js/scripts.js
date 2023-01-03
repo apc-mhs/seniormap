@@ -236,7 +236,7 @@ function placeMarkers(institutions) {
         const numStudents = parseInt(institutions[name].students.length);
         
         // Center 2 digit-long student counters
-        let x = numStudents >= 10 ? 2 : 24;
+        let svgX = numStudents >= 10 ? 2 : 24;
         // Check if the user is on a mobile device, and adjust svgs accoringly
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
             var mobile = true;
@@ -255,7 +255,7 @@ function placeMarkers(institutions) {
                     font-weight: ${mobile ? "normal" : "bold"};
                 }
             </style>
-            <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${x}" y="100">${numStudents}</text>
+            <text id="${name.replace(/\s/g, '').replace('&', '')}" x="${svgX}" y="100">${numStudents}</text>
         </svg>`;
         // backgroundColor: color of the marker, glyphColor: color of the number on the marker, x: centering of the number
         const pinSvgElement = parser.parseFromString(pinSvgString, 'image/svg+xml').documentElement;
